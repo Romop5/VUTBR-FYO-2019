@@ -1,0 +1,23 @@
+OSNOVA
+================================================================================
+1. Abstrakt
+2. Uvod
+    - Čo to vlastne je ?
+    - Preco sa nimi zaoberat ?
+        => nutné ich riešiť v reálnom svete pre získanie vhodných výsledkov
+    - Ako sa delia
+        -> chromatické / achromatické
+3. Chromatické aberácie / Monochromatické
+    - jednotlivé typy
+    - vždy stráviteľný úvod do danej aberácie
+        - ako sa prejavuje
+        - prečo vlastne nastáva
+        - ilustrácia
+
+    a) Monochromatické aberace
+        - vychádzajú zo zjednodušenia sin phi = phi pre paraxilane uhly a tym pádom odchlkou od
+        Schnellova zákona
+        - Schnellov zákon je možné vyjadriť presnejšie
+
+4. Ilustrácie riešení aberácii v reálnom svete
+    - obrázky zložitejších optických sústav ?
