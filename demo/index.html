@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>FYO - Chromatická aberácia</title>
+      <script type="text/javascript" src="pixi.js"></script>
+   </head>
+   <body>
+   <script id="shader" type="shader">
+       precision mediump float;
+
+        varying vec2 vTextureCoord;
+        uniform sampler2D uSampler;
+
+        void main(void) {
+          gl_FragColor = texture2D(uSampler, vTextureCoord);
+          gl_FragColor.x *= 0.0;
+        }
+    </script>
+
+      <script> 
+          var app = new PIXI.Application(800, 600, {backgroundColor : 0x1099bb});
+        document.body.appendChild(app.view);
+
+        // create a new Sprite from an image path
+        var bunny = PIXI.Sprite.fromImage('FIT.png')
+
+        // center the sprite's anchor point
+        bunny.anchor.set(0.5);
+
+        // move the sprite to the center of the screen
+        bunny.x = app.screen.width / 2;
+        bunny.y = app.screen.height / 2;
+
+        app.stage.addChild(bunny);
+
+        // Listen for animate update
+        app.ticker.add(function(delta) {
+            //bunny.rotation += 0.01 * delta;
+        });
+
+        //Get shader code as a string
+        var shaderCode = document.getElementById("shader").innerHTML
+        //Create our Pixi filter using our custom shader code
+        var simpleShader = new PIXI.Filter('',shaderCode);
+        //Apply it to our object
+        bunny.filters = [simpleShader]
+
+      </script>
+   </body>
+</html>
