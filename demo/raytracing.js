@@ -43,6 +43,7 @@ function getCircleNormalFromPoint(point, circle)
 
 function refractIncidenceRay(ray, normal, n1, n2)
 {
+    console.log("Refracting: " + n1 + " and " + n2)
     let cosPhi = -1*math.dot(ray.direction, normal)
     let sin2Phi = math.pow(n1/n2,2)*(1-math.pow(cosPhi, 2))
 
@@ -74,9 +75,10 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     let pointOutside = calculateCollisionRay2Circle(rayStartingAtFirstInterface, circle2)[1]
     let rayAtSecondInterface = new Ray(pointOutside, newDirection)
     normal = getCircleNormalFromPoint(pointOutside, circle2)
+    console.log("circle 2 normal" + JSON.stringify(normal))
 
     // Refract at second interface => flip normal
-    newDirection = refractIncidenceRay(rayAtSecondInterface, normal, n2,n1)
+    newDirection = refractIncidenceRay(rayAtSecondInterface, math.subtract([0,0,0],normal), n2,n1)
 
     // Now, newDirection is the direction of the ray going out of the lens and rayAtSecondInterface
     // is its position
@@ -87,6 +89,8 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     console.log("Ray starting inside\t\t"+JSON.stringify(rayStartingAtFirstInterface))
     console.log("Ray coming at the second\t" + JSON.stringify(rayAtSecondInterface))
     console.log("Result: \t\t\t" + JSON.stringify(result))
+
+    return [ray.position, rayAtCircle.position, rayAtSecondInterface.position, math.add(result.position,math.multiply(2,result.direction))]
 }
 
 
@@ -101,4 +105,61 @@ function simulateSpreading(ray, stopAtPositionX)
 }
 
 
-console.log(solveLens(new Ray([2, 0, 0], [1, 0, 0]), 1.0, [1.0,0.0,0.0], 1.0, [1.0,0.0,0.0], 1.0, 1.3))
+function drawPath(args,container)
+{
+    let positions = solveLens(...args)
+    positions = math.multiply(positions, 200.0) 
+    console.log(JSON.stringify(positions))
+    var realPath = new PIXI.Graphics();
+    var dots = new PIXI.Graphics();
+
+    let colorRG = math.multiply(args[0].direction,3.0)
+    let color = PIXI.utils.rgb2hex(colorRG)
+    realPath.lineStyle(1, color, 1);
+    realPath.moveTo(...positions[0]);
+    positions.forEach(function (position) {
+        realPath.lineTo(...position);
+
+        dots.beginFill(0xe74c3c); // Red
+        dots.drawCircle(...position.slice(0,2), 2.0);
+        dots.endFill();
+    })
+
+    container.addChild(realPath);
+    container.addChild(dots)
+
+}
+
+function degreeToRad(deg)
+{
+    return (deg /360) * 2 * Math.PI
+}
+
+/*
+ * Draw scene
+ */
+function drawScene(stage)
+{
+    var cont = new PIXI.Container()
+    //cont.setPIXI.Matrix().translate(50,50)
+    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
+    stage.addChild(cont)
+    angles = math.multiply([...Array(20).keys()],2)
+    angles.forEach( function (angles) {
+        angles = degreeToRad(angles)
+        let vector = normalize([math.cos(angles),math.sin(angles), 0])
+        console.log(angles + JSON.stringify(vector))
+        drawPath([new Ray([-0.5, 0, 0], vector), 1.0, [2.0,0.0,0.0], 2.0, [0.0,0.0,0.0], 1.0, 2.0], cont)
+    });
+    //stage.addChild(cont)
+    //stage.position = new PIXI.Point(1000,00)
+}
+
+var app = new PIXI.Application(1200, 600, { antialias: true });
+document.body.appendChild(app.view);
+
+var sprite = PIXI.Sprite.fromImage('examples/assets/bg_rotate.jpg');
+
+drawScene(app.stage)
+
+
