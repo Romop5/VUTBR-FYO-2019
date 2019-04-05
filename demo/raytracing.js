@@ -144,12 +144,18 @@ function drawScene(stage)
     //cont.setPIXI.Matrix().translate(50,50)
     cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
     stage.addChild(cont)
-    angles = math.multiply([...Array(20).keys()],2)
+    let angles = math.multiply([...Array(20).keys()],2).concat(math.multiply([...Array(20).keys()],-2))
+    console.log(angles)
     angles.forEach( function (angles) {
+        console.log(angles)
         angles = degreeToRad(angles)
         let vector = normalize([math.cos(angles),math.sin(angles), 0])
         console.log(angles + JSON.stringify(vector))
-        drawPath([new Ray([-0.5, 0, 0], vector), 1.0, [2.0,0.0,0.0], 2.0, [0.0,0.0,0.0], 1.0, 2.0], cont)
+        try {
+        drawPath([new Ray([-0.5, 0, 0], vector), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.6], cont)
+        } catch(err)
+        {
+        }
     });
     //stage.addChild(cont)
     //stage.position = new PIXI.Point(1000,00)
