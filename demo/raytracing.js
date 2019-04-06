@@ -56,8 +56,8 @@ function simulateSpreading(ray, stopAtPositionX)
 {
     if( ray.position[2] < stopAtPositionX)
     {
-        delta = (stopAtPositionX - ray.position[0])/ray.direction[0]
-        return Ray(ray.position + delta*ray.direction,ray.direction)
+        let delta = math.subtract(stopAtPositionX , ray.position[0])/ray.direction[0]
+        return new Ray(math.add(ray.position , math.multiply(delta,ray.direction)),ray.direction)
     }
     return ray
 }
@@ -100,6 +100,7 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     // Now, newDirection is the direction of the ray going out of the lens and rayAtSecondInterface
     // is its position
     let result = new Ray(rayAtSecondInterface.position,newDirection)
+    result = simulateSpreading(result, 4);
     // Debug:
     console.log("Lens debug:")
     console.log("Ray at circle\t\t\t" + JSON.stringify(rayAtCircle))
@@ -141,6 +142,16 @@ function degreeToRad(deg)
     return (deg /360) * 2 * Math.PI
 }
 
+function drawLens(stage, position, radius, start,end)
+{
+    var arc = new PIXI.Graphics()
+
+    console.log("drawLen" + position + " - " + radius)
+    arc.lineStyle(1, 0xffffff, 1);
+    arc.arc(position*200, 0.0, radius*200, degreeToRad(start), degreeToRad(end),false)
+    stage.addChild(arc)
+}
+
 /*
  * Draw scene
  */
@@ -152,6 +163,7 @@ function drawScene(stage)
     stage.addChild(cont)
     let angles = math.multiply([...Array(20).keys()],2).concat(math.multiply([...Array(20).keys()],-2))
     console.log(angles)
+
     angles.forEach( function (angles) {
         console.log(angles)
         angles = degreeToRad(angles)
@@ -185,11 +197,15 @@ function drawScene(stage, parameters)
     let offsets = generateRayAngles(parameters["raysCount"])
     offsets.forEach( function (offsets) {
         try {
-        drawPath([new Ray([-0.5, offsets, 0], [1,0,0]), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, parameters["refraction"]], cont)
+        let position1 = [parameters["position1"], 0,0]
+        let position2 = [parameters["position2"], 0,0]
+        drawPath([new Ray([-0.5, offsets, 0], [1,0,0]), parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, parameters["refraction"]], cont)
         } catch(err)
         {
         }
     });
+    drawLens(cont, parameters["position1"], parameters["radiusr1"], 90,270)
+    drawLens(cont, parameters["position2"], parameters["radiusr2"], 270,90+360)
     //stage.addChild(cont)
     //stage.position = new PIXI.Point(1000,00)
 }
@@ -211,15 +227,27 @@ function drawScene(stage, parameters)
 */
 
 
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2"]
+
 function getCurrentParameters()
 {
-    let dataFloatMembers = ["refraction", "raysCount", "radiusr1"]
     let data = {}
     dataFloatMembers.forEach( function (member) {
         data[member] = parseFloat(document.getElementById(member).value)
     });
     console.log(JSON.stringify(data))
     return data
+}
+
+function setParameters(data)
+{
+    let paramaters = dataFloatMembers
+    for(var id in dataFloatMembers)
+    {
+        let member = dataFloatMembers[id]
+        console.log("Finding member " + member)
+        document.getElementById(member).value = data[member]
+    }
 }
 
 
@@ -230,6 +258,12 @@ document.body.appendChild(app.view);
 var defaultParameters = {}
 defaultParameters["refraction"] = 1.5;
 defaultParameters["raysCount"] = 10;
+defaultParameters["radiusr1"] = 1;
+defaultParameters["position1"] = 2;
+defaultParameters["radiusr2"] = 1;
+defaultParameters["position2"] = 2;
+
+console.log(JSON.stringify(defaultParameters))
 
 drawScene(app.stage, defaultParameters)
 app.render();
@@ -247,6 +281,9 @@ function renderWithUserArguments()
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    // Fill the form with default parameters
+    setParameters(defaultParameters)
+
     let allInputs = document.getElementsByTagName("input")
     for( var i = 0; i < allInputs.length; i++)
     {
