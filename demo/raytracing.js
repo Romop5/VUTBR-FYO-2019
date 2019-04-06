@@ -51,6 +51,19 @@ function refractIncidenceRay(ray, normal, n1, n2)
     return result
 }
 
+
+function simulateSpreading(ray, stopAtPositionX)
+{
+    if( ray.position[2] < stopAtPositionX)
+    {
+        delta = (stopAtPositionX - ray.position[0])/ray.direction[0]
+        return Ray(ray.position + delta*ray.direction,ray.direction)
+    }
+    return ray
+}
+
+
+
 function solveLens(ray, r1, position1, r2, position2, n1, n2)
 {
     let circle1 = new Circle(position1, r1)
@@ -59,7 +72,7 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     let pointAtFirstCircle = calculateCollisionRay2Circle(ray, circle1)[0]
     // If ray doesnt intersect the len, then continue to infinity
     if ((pointAtFirstCircle) == null) 
-        return new Ray(ray.position+ray.direction*1000,ray.direction)
+        return [new Ray(ray.position+ray.direction*1000,ray.direction)]
     // Calculate normal -> take the first intersect (should be closer when approaching from left)
     let normal = getCircleNormalFromPoint(pointAtFirstCircle, circle1)
 
@@ -74,6 +87,10 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     // Calculate the point going out of lens
     let pointOutside = calculateCollisionRay2Circle(rayStartingAtFirstInterface, circle2)[1]
     let rayAtSecondInterface = new Ray(pointOutside, newDirection)
+    // Detect invalid len
+    if(math.dot(newDirection, math.subtract(pointOutside, rayStartingAtFirstInterface.position)) < 0)
+        return [new Ray(ray.position+ray.direction*1000,ray.direction)]
+
     normal = getCircleNormalFromPoint(pointOutside, circle2)
     console.log("circle 2 normal" + JSON.stringify(normal))
 
@@ -91,17 +108,6 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     console.log("Result: \t\t\t" + JSON.stringify(result))
 
     return [ray.position, rayAtCircle.position, rayAtSecondInterface.position, math.add(result.position,math.multiply(2,result.direction))]
-}
-
-
-function simulateSpreading(ray, stopAtPositionX)
-{
-    if( ray.position[2] < stopAtPositionX)
-    {
-        delta = (stopAtPositionX - ray.position[0])/ray.direction[0]
-        return Ray(ray.position + delta*ray.direction,ray.direction)
-    }
-    return ray
 }
 
 
@@ -152,7 +158,7 @@ function drawScene(stage)
         let vector = normalize([math.cos(angles),math.sin(angles), 0])
         console.log(angles + JSON.stringify(vector))
         try {
-        drawPath([new Ray([-0.5, 0, 0], vector), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.6], cont)
+        drawPath([new Ray([-0.3, 0.0, 0], vector), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.5], cont)
         } catch(err)
         {
         }
@@ -161,11 +167,89 @@ function drawScene(stage)
     //stage.position = new PIXI.Point(1000,00)
 }
 
+function generateRayAngles(rayCount)
+{
+    let offsets = math.multiply([...Array(rayCount).keys()],1/rayCount).concat(math.multiply([...Array(rayCount).keys()],-1/rayCount))
+    return offsets
+}
+
+/*
+ * Draw scene = parallel
+ */
+function drawScene(stage, parameters)
+{
+    var cont = new PIXI.Container()
+    //cont.setPIXI.Matrix().translate(50,50)
+    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
+    stage.addChild(cont)
+    let offsets = generateRayAngles(parameters["raysCount"])
+    offsets.forEach( function (offsets) {
+        try {
+        drawPath([new Ray([-0.5, offsets, 0], [1,0,0]), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, parameters["refraction"]], cont)
+        } catch(err)
+        {
+        }
+    });
+    //stage.addChild(cont)
+    //stage.position = new PIXI.Point(1000,00)
+}
+
+/*
+ * Draw scene
+ */
+/*function drawScene(stage)
+{
+    var cont = new PIXI.Container()
+    //cont.setPIXI.Matrix().translate(50,50)
+    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
+    stage.addChild(cont)
+    for(let i = 0; i < 10; i++)
+    {
+        drawPath([new Ray([-0.3, 0.0, 0], normalize([1.0,0.2,0.0])), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.5+i/100], cont)
+    }
+}
+*/
+
+
+function getCurrentParameters()
+{
+    let dataFloatMembers = ["refraction", "raysCount", "radiusr1"]
+    let data = {}
+    dataFloatMembers.forEach( function (member) {
+        data[member] = parseFloat(document.getElementById(member).value)
+    });
+    console.log(JSON.stringify(data))
+    return data
+}
+
+
+
 var app = new PIXI.Application(1200, 600, { antialias: true });
 document.body.appendChild(app.view);
 
-var sprite = PIXI.Sprite.fromImage('examples/assets/bg_rotate.jpg');
+var defaultParameters = {}
+defaultParameters["refraction"] = 1.5;
+defaultParameters["raysCount"] = 10;
 
-drawScene(app.stage)
+drawScene(app.stage, defaultParameters)
+app.render();
+app.stop()
 
+function renderWithUserArguments()
+{
+    app.stage.removeChildren()
+    console.log("Rendering user")
+    app.renderer.clear();
+    drawScene(app.stage, getCurrentParameters())
+    app.render()
+    app.stop()
+    
+}
 
+document.addEventListener("DOMContentLoaded", function(){
+    let allInputs = document.getElementsByTagName("input")
+    for( var i = 0; i < allInputs.length; i++)
+    {
+        allInputs.item(i).addEventListener("input", renderWithUserArguments);
+    }
+});
