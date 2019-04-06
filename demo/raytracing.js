@@ -152,6 +152,14 @@ function drawLens(stage, position, radius, start,end)
     stage.addChild(arc)
 }
 
+function drawAxis(stage)
+{
+    var axis = new PIXI.Graphics()
+    axis.lineStyle(1, 0xffffff, 1);
+    //axis.lineTo(
+
+}
+
 /*
  * Draw scene
  */
@@ -159,7 +167,7 @@ function drawScene(stage)
 {
     var cont = new PIXI.Container()
     //cont.setPIXI.Matrix().translate(50,50)
-    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
+    cont.setTransform(000,000, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
     stage.addChild(cont)
     let angles = math.multiply([...Array(20).keys()],2).concat(math.multiply([...Array(20).keys()],-2))
     console.log(angles)
@@ -188,11 +196,11 @@ function generateRayAngles(rayCount)
 /*
  * Draw scene = parallel
  */
-function drawScene(stage, parameters)
+function drawScene(stage, parameters, app)
 {
     var cont = new PIXI.Container()
     //cont.setPIXI.Matrix().translate(50,50)
-    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
+    cont.setTransform(0,app.screen.height/2, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
     stage.addChild(cont)
     let offsets = generateRayAngles(parameters["raysCount"])
     offsets.forEach( function (offsets) {
@@ -204,8 +212,11 @@ function drawScene(stage, parameters)
         {
         }
     });
-    drawLens(cont, parameters["position1"], parameters["radiusr1"], 90,270)
-    drawLens(cont, parameters["position2"], parameters["radiusr2"], 270,90+360)
+    if(parameters["showLens"] > 0.1)
+    {
+        drawLens(cont, parameters["position1"], parameters["radiusr1"], 90,270)
+        drawLens(cont, parameters["position2"], parameters["radiusr2"], 270,90+360)
+    }
     //stage.addChild(cont)
     //stage.position = new PIXI.Point(1000,00)
 }
@@ -227,13 +238,21 @@ function drawScene(stage, parameters)
 */
 
 
-let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2"]
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens"]
 
 function getCurrentParameters()
 {
     let data = {}
     dataFloatMembers.forEach( function (member) {
-        data[member] = parseFloat(document.getElementById(member).value)
+        let node = document.getElementById(member)
+        if(node.getAttribute("type") == "checkbox")
+        {
+            data[member] = 0;
+            if(node.checked == true)
+                data[member] = 1;
+        } else {
+            data[member] = parseFloat(node.value)
+        }
     });
     console.log(JSON.stringify(data))
     return data
@@ -252,8 +271,9 @@ function setParameters(data)
 
 
 
-var app = new PIXI.Application(1200, 600, { antialias: true });
+var app = new PIXI.Application(window.innerWidth, 600, { antialias: true });
 document.body.appendChild(app.view);
+
 
 var defaultParameters = {}
 defaultParameters["refraction"] = 1.5;
@@ -265,7 +285,7 @@ defaultParameters["position2"] = 2;
 
 console.log(JSON.stringify(defaultParameters))
 
-drawScene(app.stage, defaultParameters)
+drawScene(app.stage, defaultParameters,app)
 app.render();
 app.stop()
 
@@ -274,7 +294,7 @@ function renderWithUserArguments()
     app.stage.removeChildren()
     console.log("Rendering user")
     app.renderer.clear();
-    drawScene(app.stage, getCurrentParameters())
+    drawScene(app.stage, getCurrentParameters(), app)
     app.render()
     app.stop()
     
@@ -290,3 +310,24 @@ document.addEventListener("DOMContentLoaded", function(){
         allInputs.item(i).addEventListener("input", renderWithUserArguments);
     }
 });
+window.addEventListener("resize", function (e) {
+    app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
+    renderWithUserArguments()
+    //app.resize()
+});
+
+var isFullscreen = false
+
+window.addEventListener("keydown", function (e) {
+    console.log(e)
+    if(e["key"] == "f")
+    {
+        isFullscreen = !isFullscreen
+        if(isFullscreen == true)
+            app.renderer.resize(window.innerWidth, window.innerHeight)
+        else
+            app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
+        renderWithUserArguments()
+    }
+});
+
