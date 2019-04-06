@@ -215,7 +215,7 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
  */
 function drawPath(color, positions,container)
 {
-    positions = math.multiply(positions, 200.0) 
+    positions = math.multiply(positions, calculateScreenMagnification()) 
     console.log(JSON.stringify(positions))
     var realPath = new PIXI.Graphics();
     var dots = new PIXI.Graphics();
@@ -243,6 +243,11 @@ function degreeToRad(deg)
     return (deg /360) * 2 * Math.PI
 }
 
+function calculateScreenMagnification()
+{
+    return app.screen.width/8.0
+}
+
 /*
  *  Draw half of circle, representing len's border
  */
@@ -252,7 +257,7 @@ function drawLens(stage, position, radius, start,end)
 
     console.log("drawLen" + position + " - " + radius)
     arc.lineStyle(1, 0xffffff, 1);
-    arc.arc(position*200, 0.0, radius*200, degreeToRad(start), degreeToRad(end),false)
+    arc.arc(position*calculateScreenMagnification(), 0.0, radius*calculateScreenMagnification(), degreeToRad(start), degreeToRad(end),false)
     stage.addChild(arc)
 }
 
@@ -283,6 +288,7 @@ function drawScene(stage, parameters, app)
     cont.setTransform(0,app.screen.height/2, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
     stage.addChild(cont)
     let offsetsList = generateRayAngles(parameters["raysCount"])
+    offsetsList = offsetsList.map((val) => val*parameters["heigthRange"])
 
     let maximumX = -1000
     let minimumX = 1000
@@ -360,8 +366,8 @@ function drawScene(stage, parameters, app)
         drawPath(0x00ff00,[[minimumX,0.3,0],[maximumX, 0.3,0]],cont)
 
         let textObject = new PIXI.Text('Aberration',{fontFamily : 'Arial', fontSize: 24, fill : 0x00ff00, align : 'center'});
-        textObject.position.x = 200*minimumX
-        textObject.position.y = 200*0.3
+        textObject.position.x = calculateScreenMagnification()*minimumX
+        textObject.position.y = calculateScreenMagnification()*0.3
         cont.addChild(textObject)
     }
 
@@ -372,7 +378,7 @@ function drawScene(stage, parameters, app)
     }
 }
 
-let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta", "isChromaticModeOn"]
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta", "isChromaticModeOn", "heigthRange"]
 
 function getCurrentParameters()
 {
@@ -415,15 +421,17 @@ document.body.appendChild(app.view);
 
 var defaultParameters = {}
 defaultParameters["refraction"] = 1.5;
-defaultParameters["raysCount"] = 10;
+defaultParameters["raysCount"] = 30;
 defaultParameters["radiusr1"] = 1;
 defaultParameters["position1"] = 2;
 defaultParameters["radiusr2"] = 1;
 defaultParameters["position2"] = 2;
 defaultParameters["rayX"] = 0;
 defaultParameters["rayY"] = 0;
-defaultParameters["markSphericalAberration"] = 1
+defaultParameters["markSphericalAberration"] = 0
+defaultParameters["isChromaticModeOn"] = 0
 defaultParameters["anglebeta"] = 0
+defaultParameters["heigthRange"] = 1
 
 console.log(JSON.stringify(defaultParameters))
 
@@ -467,7 +475,7 @@ document.addEventListener("DOMContentLoaded", function(){
     {
         allInputs.item(i).addEventListener("input", renderWithUserArguments);
     }
-    //document.getElementById("templateSelector").addEventListener("onchange", handleInputEvent)
+    renderWithUserArguments()
 });
 /*
  * Handles the browser's window resize action
@@ -497,10 +505,10 @@ function applySettings(id)
     settingsList = {
         // spherical aberration
         sphericalAberration:
-        {"refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0},
+        {"refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0, heigthRange: 1},
         // chromatic aberration
         chromaticAberration:
-        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1}
+        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1, heigthRange: 1}
     }
     setParameters(settingsList[id])
     renderWithUserArguments()
@@ -519,6 +527,8 @@ window.addEventListener("keydown", function (e) {
         console.log(newScale)
         app.stage.setTransform(0,0,newScale, newScale)
     }
+    if(e["key"] == "Enter")
+        document.getElementById("raysCount").value = parseInt(document.getElementById("raysCount").value)+1
     if(e["key"] == "m")
         toggleCheckbox(document.getElementById("markSphericalAberration"))
     if(e["key"] == "p")
