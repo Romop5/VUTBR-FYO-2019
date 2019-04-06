@@ -1,3 +1,69 @@
+/*
+ * wavelengthToColor() function was taken from
+ * http://scienceprimer.com/javascript-code-convert-light-wavelength-color
+ */
+function wavelengthToColor(wavelength) {
+    var r,
+        g,
+        b,
+        alpha,
+        colorSpace,
+        wl = wavelength,
+        gamma = 1;
+
+
+    if (wl >= 380 && wl < 440) {
+        R = -1 * (wl - 440) / (440 - 380);
+        G = 0;
+        B = 1;
+   } else if (wl >= 440 && wl < 490) {
+       R = 0;
+       G = (wl - 440) / (490 - 440);
+       B = 1;
+    } else if (wl >= 490 && wl < 510) {
+        R = 0;
+        G = 1;
+        B = -1 * (wl - 510) / (510 - 490);
+    } else if (wl >= 510 && wl < 580) {
+        R = (wl - 510) / (580 - 510);
+        G = 1;
+        B = 0;
+    } else if (wl >= 580 && wl < 645) {
+        R = 1;
+        G = -1 * (wl - 645) / (645 - 580);
+        B = 0.0;
+    } else if (wl >= 645 && wl <= 780) {
+        R = 1;
+        G = 0;
+        B = 0;
+    } else {
+        R = 0;
+        G = 0;
+        B = 0;
+    }
+
+    // intensty is lower at the edges of the visible spectrum.
+    if (wl > 780 || wl < 380) {
+        alpha = 0;
+    } else if (wl > 700) {
+        alpha = (780 - wl) / (780 - 700);
+    } else if (wl < 420) {
+        alpha = (wl - 380) / (420 - 380);
+    } else {
+        alpha = 1;
+    }
+
+    colorSpace = ["rgba(" + (R * 100) + "%," + (G * 100) + "%," + (B * 100) + "%, " + alpha + ")", R, G, B, alpha]
+
+    // colorSpace is an array with 5 elements.
+    // The first element is the complete code as a string.
+    // Use colorSpace[0] as is to display the desired color.
+    // use the last four elements alone or together to access each of the individual r, g, b and a channels.
+
+    return [R, G, B];
+
+}
+
 function Ray(pos, direction)
 {
     this.position = pos;
@@ -203,27 +269,44 @@ function drawScene(stage, parameters, app)
             inputRay.direction = normalize([math.cos(degreeToRad(parameters["anglebeta"])), math.sin(degreeToRad(parameters["anglebeta"])), 0.0])
         }
 
-        let color = PIXI.utils.rgb2hex(colorRG)
-
-        try {
-            // Calculate the path of ray passing through the optical system
-            let rayPathData = solveLens(...[inputRay, parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, parameters["refraction"]])
-
-            // Detect z intersection
-            
-            let resultRay = rayPathData["resultRay"]
-            let paramterT = -resultRay.position[1]/resultRay.direction[1]
-            let intersectionPosition = math.add(resultRay.position, math.multiply(paramterT,resultRay.direction))
-            if(intersectionPosition[0] > 0 && intersectionPosition[0] < 10)
-            {
-                console.log("Intersection " + intersectionPosition)
-                maximumX = math.max(maximumX, intersectionPosition[0])
-                minimumX = math.min(minimumX, intersectionPosition[0])
-            }
-            // Draw the path
-            drawPath(color,rayPathData.positions,cont)
-        } catch(err)
+        let lensRefractionIndex = parameters["refraction"]
+        let wavelengthList = [[500, colorRG]]
+        if(parameters["isChromaticModeOn"] > 0)
         {
+            // add more waves and override the ray color
+            let minLen = 380
+            let maxLen = 740
+            let count = 3
+            let step = (maxLen-minLen)/count
+            let keys = [...Array(count).keys()]
+            wavelengthList = keys.map((value) => [(value*step+minLen), wavelengthToColor(value*step+minLen)])
+            console.log(wavelengthToColor)
+        }
+        for ( wavelengthID in wavelengthList)
+        {
+            let wavelength = wavelengthList[wavelengthID]
+            let refraction = parameters["refraction"] + wavelength[0]/(740*4)
+            let color = PIXI.utils.rgb2hex(wavelength[1])
+            try {
+                // Calculate the path of ray passing through the optical system
+                let rayPathData = solveLens(...[inputRay, parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, refraction])
+
+                // Detect z intersection
+                
+                let resultRay = rayPathData["resultRay"]
+                let paramterT = -resultRay.position[1]/resultRay.direction[1]
+                let intersectionPosition = math.add(resultRay.position, math.multiply(paramterT,resultRay.direction))
+                if(intersectionPosition[0] > 0 && intersectionPosition[0] < 10)
+                {
+                    console.log("Intersection " + intersectionPosition)
+                    maximumX = math.max(maximumX, intersectionPosition[0])
+                    minimumX = math.min(minimumX, intersectionPosition[0])
+                }
+                // Draw the path
+                drawPath(color,rayPathData.positions,cont)
+            } catch(err)
+            {
+            }
         }
     });
 
@@ -246,7 +329,7 @@ function drawScene(stage, parameters, app)
     }
 }
 
-let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta"]
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta", "isChromaticModeOn"]
 
 function getCurrentParameters()
 {
@@ -303,6 +386,11 @@ app.stop()
 
 function renderWithUserArguments()
 {
+    if(document.getElementById("fullscreen").checked == true)
+        app.renderer.resize(window.innerWidth, window.innerHeight)
+    else
+        app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
+
     app.stage.removeChildren()
     console.log("Rendering user")
     app.renderer.clear();
@@ -328,7 +416,6 @@ window.addEventListener("resize", function (e) {
     //app.resize()
 });
 
-var isFullscreen = false
 
 function toggleCheckbox(node)
 {
@@ -348,14 +435,12 @@ window.addEventListener("keydown", function (e) {
     if(e["key"] == "p")
         toggleCheckbox(document.getElementById("shouldBeSource"))
     if(e["key"] == "c")
+        toggleCheckbox(document.getElementById("isChromaticModeOn"))
+    if(e["key"] == "l")
         toggleCheckbox(document.getElementById("showLens"))
     if(e["key"] == "f")
     {
-        isFullscreen = !isFullscreen
-        if(isFullscreen == true)
-            app.renderer.resize(window.innerWidth, window.innerHeight)
-        else
-            app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
+        toggleCheckbox(document.getElementById("fullscreen"))
     }
     renderWithUserArguments()
 });
