@@ -1,7 +1,7 @@
 \documentclass[10pt,xcolor=pdflatex]{beamer}
 \usepackage{newcent}
 \usepackage[utf8]{inputenc}
-%\usepackage[czech]{babel}
+\usepackage[slovak]{babel}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
 \usetheme{FIT}
@@ -27,32 +27,15 @@ xdobia11@stud.fit.vutbr.cz}
 
 \begin{frame}\frametitle{Aberácie šošoviek}
     \begin{itemize}
-        \item čo to znamená ?
-        \item ako vznikajú ?
-        \item dôsledok ?
+        \item def. \textit{odchíľka od idealizovaného modelu Gaussovej optiky} - Hecht
+        \item def. \textit{neschopnosť optického systému zaostriť ľúče do jedného bodu} - Wikipedia
+        \item optika prvého rádu - \textbf{paraxiálna optika} - $n_1 \times \alpha_1 = n_2 \times \alpha_2$
     \end{itemize}
-\end{frame}
+    \begin{figure}
+        \includegraphics[scale=0.5]{img/thinLensEq.png}
+        \caption{Model tenkej šošovky}
+    \end{figure}
 
-\begin{frame}\frametitle{Paraxialná optika}
-    \begin{itemize}
-        \item zjednodušenie pre \textbf{malé uhly} voči \textit{optickej osi}
-    	\item sin x $\sim$ x
-
-    	\item Snellov zákon - TODO
-
-    	\item Obrázok geometrickej šošovky
-        \begin{figure}
-            \includegraphics[scale=0.5]{img/thinLensEq.png}
-            \caption{Model}
-        \end{figure}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Realita}
-    \begin{itemize}
-    	\item Upravený Schnellov zákon
-    	\item Upravený Schnellov zákon pre chromatické vlny
-    \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Rozdelenie aberácii}
@@ -71,16 +54,16 @@ xdobia11@stud.fit.vutbr.cz}
 
 \begin{frame}\frametitle{Sférická aberácia}
     \begin{itemize}
-        \item posunutie ohniska v závislosti na vzdialenosti od \textit{optickej osi}
-        \item \textbf{Dôsledok:} rozostretý obraz 
-        \item \textit{circle of the least confusion}
+        \item pararelné ľúče nie sú fokusované do jediného bodu\textit{optickej osi}
+        \item \textbf{Dôsledok:} rozostretý obraz, \textit{circle of the least confusion}
+        \item Riešienie: \textit{asférický tvar šošoviek}, korektory
     \end{itemize}
 
     \begin{columns}
     \column{0.5\textwidth}
     \begin{figure}
         \includegraphics[scale=0.1]{img/sphericalAberrationWikipedia.png}
-        \caption{Dôsledok aberácie => rozptyl ohnisk}
+        \caption{Ideálna (hore) vs reálna šošovka (dole)}
     \end{figure}
     \column{0.5\textwidth}
     \begin{figure}
@@ -88,13 +71,53 @@ xdobia11@stud.fit.vutbr.cz}
         \caption{Asférická šošovka}
     \end{figure}
     \end{columns}
-        Riešienie: \textit{asférický tvar šošoviek}, korektory
+\end{frame}
+
+\begin{frame}\frametitle{Coma}
+    \begin{itemize}
+        \item rozmazanie bodových predmetov ležiacich mimo optickú osu 
+        \item typickým prejavom je vznik chvosta (ang. \textit{coma}, česky \textit{ocas})
+        \item \textbf{riešenie:} coma corrector, pre 1 vlnovú dĺžku aplanatické (asférické šošovky)
+    \end{itemize}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \includegraphics[scale=0.15]{img/coma.png}
+        \end{figure}
+
+        \column{0.5\textwidth}
+        \begin{figure}
+            \includegraphics[scale=0.20]{img/coma.jpg}
+            \caption{Baader Rowe Coma Corrector}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}\frametitle{Petzvalovo zakrivenie pola}
+    \begin{itemize}
+        % http://www.wikiwand.com/en/Petzval_field_curvature
+        \item lúče z naklonenej predmetovej roviny konvergujú na rovine 
+        \item nemožno voliť obrazovú rovinu, nutno použiť zakrivenú rovinu
+        \item nutno komenzovať: Kepler Space Center
+    \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Astigmatizmus}
+    \begin{itemize}
+        \item lúče jednej roviny majú odlišné ohnisko od ľúčov roviny kolmej na ňu
+    \end{itemize}
+    \begin{figure}
+        \includegraphics[scale=0.20]{img/astigmatism.png}
+        \caption{Vizuálny astigmatizmus}
+    \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Chromaticka aberácia}
     \begin{itemize}
         \item index lomu je funkciou \textbf{vlnovej dĺžky}
-        \item \textbf{Dôsledok:} rozostrenie podľa farieb 
+        \item \textbf{Dôsledok:} rozostrenie podľa farebných zložiek
     \end{itemize}
 
     \begin{figure}
