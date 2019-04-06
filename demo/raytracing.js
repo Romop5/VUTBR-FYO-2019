@@ -1,4 +1,9 @@
 /*
+ * FYO 2019 - Lens aberrations project
+ * Author: Roman Dobiáš (xdobia11@stud.fit.vutbr.cz)
+ */
+
+/*
  * wavelengthToColor() function was taken from
  * http://scienceprimer.com/javascript-code-convert-light-wavelength-color
  */
@@ -64,20 +69,28 @@ function wavelengthToColor(wavelength) {
 
 }
 
+/*
+ * A structure which represent a 3D vector with position
+ */ 
 function Ray(pos, direction)
 {
     this.position = pos;
     this.direction = direction;
 }
+// Represents a 3D sphere at position
 function Circle(pos, radius)
 {
     this.position = pos
     this.radius = radius
 }
 
+/*
+ * Returns an array of points (intersections) between an ray and sphere in 3D
+ */
 function calculateCollisionRay2Circle(ray, circle)
 {
-//Formula using https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+//Implemented according to the following algorithm:
+//https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
     let length = math.norm(ray.direction)
     let l = math.multiply(ray.direction,(1.0/length))
     let o = ray.position
@@ -96,28 +109,42 @@ function calculateCollisionRay2Circle(ray, circle)
     return null 
 }
 
+// Normalize vector's length to 1
 function normalize(vect)
 {
     return math.multiply(vect,(1.0/math.norm(vect)))
 }
 
+// Get surface normal at the point lying at the sphere
 function getCircleNormalFromPoint(point, circle)
 {
     return normalize(math.subtract(point,circle.position))
 }
 
 
+/*
+ * Calculate a resulting vector of refraction at surface with 'normal'
+ * and refractive indices n1 and n2
+ * Algorithm taken from article: 
+ * https://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
+ */
 function refractIncidenceRay(ray, normal, n1, n2)
 {
     console.log("Refracting: " + n1 + " and " + n2)
     let cosPhi = -1*math.dot(ray.direction, normal)
     let sin2Phi = math.pow(n1/n2,2)*(1-math.pow(cosPhi, 2))
+    // Handle critical angle refractions
+    if(sin2Phi > 1)
+        sin2Phi = 1.0
 
     let result = math.add(math.multiply((n1/n2),ray.direction) , math.multiply((math.subtract((n1/n2)*cosPhi,math.sqrt(1-sin2Phi))),normal));
     return result
 }
 
 
+/*
+ * Simulate the flow of ray through the space until stopAtPositionX is approached
+ */
 function simulateSpreading(ray, stopAtPositionX)
 {
     if( ray.position[2] < stopAtPositionX)
@@ -128,8 +155,12 @@ function simulateSpreading(ray, stopAtPositionX)
     return ray
 }
 
-
-
+/*
+ * Simulate the trajectory of the ray passing through the optical system
+ * position1 and position2 denotes the center of lens spheres
+ * r1 and r2 stand for spheres' radiuses
+ * RETURNS a list of points, describing the path, and the passing out of len
+ */
 function solveLens(ray, r1, position1, r2, position2, n1, n2)
 {
     let circle1 = new Circle(position1, r1)
@@ -179,6 +210,9 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
 }
 
 
+/*
+ * Draw given 2D positions as a contignous line
+ */
 function drawPath(color, positions,container)
 {
     positions = math.multiply(positions, 200.0) 
@@ -201,11 +235,17 @@ function drawPath(color, positions,container)
 
 }
 
+/*
+ * Convert degrees to radians
+ */
 function degreeToRad(deg)
 {
     return (deg /360) * 2 * Math.PI
 }
 
+/*
+ *  Draw half of circle, representing len's border
+ */
 function drawLens(stage, position, radius, start,end)
 {
     var arc = new PIXI.Graphics()
@@ -224,6 +264,9 @@ function drawAxis(stage)
 
 }
 
+/*
+ * Generate a set of ray Y positions in interval <-1, 1>
+ */
 function generateRayAngles(rayCount)
 {
     let offsets = math.multiply([...Array(rayCount).keys()],1/rayCount).concat(math.multiply([...Array(rayCount).keys()],-1/rayCount))
@@ -231,7 +274,7 @@ function generateRayAngles(rayCount)
 }
 
 /*
- * Draw scene 
+ * Draw optical scene 
  */
 function drawScene(stage, parameters, app)
 {
@@ -270,7 +313,7 @@ function drawScene(stage, parameters, app)
         }
 
         let lensRefractionIndex = parameters["refraction"]
-        let wavelengthList = [[500, colorRG]]
+        let wavelengthList = [[000, colorRG]]
         if(parameters["isChromaticModeOn"] > 0)
         {
             // add more waves and override the ray color
@@ -357,12 +400,16 @@ function setParameters(data)
         let member = dataFloatMembers[id]
         console.log("Finding member " + member)
         document.getElementById(member).value = data[member]
+        if(document.getElementById(member).getAttribute("type") == "checkbox")
+        {
+            document.getElementById(member).checked = (data[member] == 0) ? false : true;
+        }
     }
 }
 
 
 
-var app = new PIXI.Application(window.innerWidth, 600, { antialias: true });
+var app = new PIXI.Application(window.innerWidth,window.innerHeight/2 , { antialias: true });
 document.body.appendChild(app.view);
 
 
@@ -384,6 +431,9 @@ drawScene(app.stage, defaultParameters,app)
 app.render();
 app.stop()
 
+/*
+ * Render the scene using parameters given by user in GUI
+ */
 function renderWithUserArguments()
 {
     if(document.getElementById("fullscreen").checked == true)
@@ -399,7 +449,15 @@ function renderWithUserArguments()
     app.stop()
     
 }
+function handleInputEvent(e)
+{
+    console.log("handleInputEvent")
+    applySettings(document.getElementById("templateSelector").value)
+}
 
+/*
+ * Registers callbacks when the page load
+ */ 
 document.addEventListener("DOMContentLoaded", function(){
     // Fill the form with default parameters
     setParameters(defaultParameters)
@@ -409,7 +467,11 @@ document.addEventListener("DOMContentLoaded", function(){
     {
         allInputs.item(i).addEventListener("input", renderWithUserArguments);
     }
+    //document.getElementById("templateSelector").addEventListener("onchange", handleInputEvent)
 });
+/*
+ * Handles the browser's window resize action
+ */
 window.addEventListener("resize", function (e) {
     app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
     renderWithUserArguments()
@@ -417,6 +479,7 @@ window.addEventListener("resize", function (e) {
 });
 
 
+// Check/uncheck the node checkbox
 function toggleCheckbox(node)
 {
     if(node.checked == false) {
@@ -428,8 +491,34 @@ function toggleCheckbox(node)
          }
     }
 }
+
+function applySettings(id)
+{
+    settingsList = {
+        // spherical aberration
+        sphericalAberration:
+        {"refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0},
+        // chromatic aberration
+        chromaticAberration:
+        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1}
+    }
+    setParameters(settingsList[id])
+    renderWithUserArguments()
+}
+
+/*
+ * Register a callback which handles all key presses
+ */
 window.addEventListener("keydown", function (e) {
     console.log(e)
+    if(e["key"] == "+" || e["key"] == "-")
+    {
+        let ratio = e["key"] == "+" ? 2.0 : 0.5;
+        let oldScale =  app.stage.scale["x"]
+        let newScale = oldScale*ratio
+        console.log(newScale)
+        app.stage.setTransform(0,0,newScale, newScale)
+    }
     if(e["key"] == "m")
         toggleCheckbox(document.getElementById("markSphericalAberration"))
     if(e["key"] == "p")
@@ -445,3 +534,7 @@ window.addEventListener("keydown", function (e) {
     renderWithUserArguments()
 });
 
+function selectorHandler()
+{
+    console.log("nein !")
+}
