@@ -14,29 +14,54 @@
             background: #fff;
             color: #222;
         }
+        #rayform input {
+            width: 70px;
+        }
+        .full-width-container {
+            width: 100%;
+            max-width: 100%;
+            clear: both;
+            margin: 0px auto;
+        }
     </style>
        <!--<script type="text/javascript" src="advanced-graphics.js"></script>-->
       <script type="text/javascript" src="math.min.js"></script>
       <script type="text/javascript" src="raytracing.js"></script>
       <br>
-    <div class="container">
+    <div class="full-width-container">
       <h1>FYO - lens aberrations</h1>
       <!-- columns should be the immediate child of a .row -->
       <div class="row">
-        <div class="one-half column">
-            <form>
-                  Number of rays <input type="number" id="raysCount" min="1" max="60" step="1"><br>
+        <form id="rayform">
+        <div class="one-third column">
                   Index of refraction <input type="number" id="refraction" min="1" max="2" step="0.01"><br>
                   Radius R1<input type="number" id="radiusr1" min="1" max="20" step="0.1">cm<br>
                   X position<input type="number" id="position1" min="1" max="20" step="0.1">cm<br>
                   Radius R2<input type="number" id="radiusr2" min="0" max="10" step="0.1">cm<br>
                   X position R2<input type="number" id="position2" min="-5" max="20" step="0.1">cm<br>
-              </form>
         </div>
-        <div class="one-half column">
-           <input type="checkbox" id="showLens"> Enable lens curve
-           Help: <br>
-           F - toggle fullscreen
+        <div class="one-third column">
+            <div class="row">
+                <div class="one-half column">Number of rays</div><div class="one-half column">
+                    <input type="number" id="raysCount" min="1" max="600" step="1"></div>
+            </div>
+
+            <b>Ray:</b><br>
+                  X position <input type="number" id="rayX" min="-5" max="20" step="0.1">cm<br>
+                  Y position <input type="number" id="rayY" min="-5" max="20" step="0.1">cm<br>
+                  Angle beta <input type="number" id="anglebeta" min="-45" max="45" step="0.1">degrees<br>
+        </div>
+      </form>
+        <div class="one-third column">
+           <input type="checkbox" id="isChromaticModeOn"> Toggle chromatic waves<br>
+           <input type="checkbox" id="markSphericalAberration"> Mark spherical aberration <br>
+           <input type="checkbox" id="shouldBeSource"> Point/Plane source of rays <br>
+           <input type="checkbox" id="showLens"> Enable lens curve <br>
+           <input type="checkbox" id="showAxis"> Toggle axis drawing<br>
+           <b>Help</b>: <br>
+           <b>F</b>- toggle fullscreen <br>
+           <b>C</b>- toggle point/omnidirectional rays <br>
+           <b>M</b>- toggle spherical aberration <br>
         </div>
       </div>
     </div>

@@ -100,7 +100,7 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     // Now, newDirection is the direction of the ray going out of the lens and rayAtSecondInterface
     // is its position
     let result = new Ray(rayAtSecondInterface.position,newDirection)
-    result = simulateSpreading(result, 4);
+    result = simulateSpreading(result, 10);
     // Debug:
     console.log("Lens debug:")
     console.log("Ray at circle\t\t\t" + JSON.stringify(rayAtCircle))
@@ -108,20 +108,18 @@ function solveLens(ray, r1, position1, r2, position2, n1, n2)
     console.log("Ray coming at the second\t" + JSON.stringify(rayAtSecondInterface))
     console.log("Result: \t\t\t" + JSON.stringify(result))
 
-    return [ray.position, rayAtCircle.position, rayAtSecondInterface.position, math.add(result.position,math.multiply(2,result.direction))]
+    return {"positions": [ray.position, rayAtCircle.position, rayAtSecondInterface.position, math.add(result.position,math.multiply(2,result.direction))],
+        "resultRay": result}
 }
 
 
-function drawPath(args,container)
+function drawPath(color, positions,container)
 {
-    let positions = solveLens(...args)
     positions = math.multiply(positions, 200.0) 
     console.log(JSON.stringify(positions))
     var realPath = new PIXI.Graphics();
     var dots = new PIXI.Graphics();
 
-    let colorRG = math.multiply(args[0].direction,3.0)
-    let color = PIXI.utils.rgb2hex(colorRG)
     realPath.lineStyle(1, color, 1);
     realPath.moveTo(...positions[0]);
     positions.forEach(function (position) {
@@ -160,33 +158,6 @@ function drawAxis(stage)
 
 }
 
-/*
- * Draw scene
- */
-function drawScene(stage)
-{
-    var cont = new PIXI.Container()
-    //cont.setPIXI.Matrix().translate(50,50)
-    cont.setTransform(000,000, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
-    stage.addChild(cont)
-    let angles = math.multiply([...Array(20).keys()],2).concat(math.multiply([...Array(20).keys()],-2))
-    console.log(angles)
-
-    angles.forEach( function (angles) {
-        console.log(angles)
-        angles = degreeToRad(angles)
-        let vector = normalize([math.cos(angles),math.sin(angles), 0])
-        console.log(angles + JSON.stringify(vector))
-        try {
-        drawPath([new Ray([-0.3, 0.0, 0], vector), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.5], cont)
-        } catch(err)
-        {
-        }
-    });
-    //stage.addChild(cont)
-    //stage.position = new PIXI.Point(1000,00)
-}
-
 function generateRayAngles(rayCount)
 {
     let offsets = math.multiply([...Array(rayCount).keys()],1/rayCount).concat(math.multiply([...Array(rayCount).keys()],-1/rayCount))
@@ -194,7 +165,7 @@ function generateRayAngles(rayCount)
 }
 
 /*
- * Draw scene = parallel
+ * Draw scene 
  */
 function drawScene(stage, parameters, app)
 {
@@ -202,43 +173,80 @@ function drawScene(stage, parameters, app)
     //cont.setPIXI.Matrix().translate(50,50)
     cont.setTransform(0,app.screen.height/2, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
     stage.addChild(cont)
-    let offsets = generateRayAngles(parameters["raysCount"])
-    offsets.forEach( function (offsets) {
-        try {
+    let offsetsList = generateRayAngles(parameters["raysCount"])
+
+    let maximumX = -1000
+    let minimumX = 1000
+    // For each angle / ray
+    offsetsList.forEach( function (offsets) {
+        // Determine position of lens's curves
         let position1 = [parameters["position1"], 0,0]
         let position2 = [parameters["position2"], 0,0]
-        drawPath([new Ray([-0.5, offsets, 0], [1,0,0]), parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, parameters["refraction"]], cont)
+
+        let rayStartingPosition = [parameters["rayX"], parameters["rayY"],0]
+
+        let inputRay = new Ray(math.add(rayStartingPosition,[0, offsets, 0]), [1,0,0])
+        let colorRG = [1,1,1]
+        // if rays are omnidirectional
+        if(parameters["shouldBeSource"] > 0)
+        {
+            // then calculate direction vector according to angle
+            let angleConstant = 30
+            let angleInRadians = degreeToRad(offsets*angleConstant)
+            inputRay = new Ray(rayStartingPosition, normalize([math.cos(angleInRadians),math.sin(angleInRadians),0]))
+            colorRG = math.multiply(inputRay.direction,3.0)
+        } else {
+            // if rays are parallel, then just set color according to distance to optical axis
+            let maximum = math.max(...offsetsList)
+            let paramT = math.abs(offsets)/maximum;
+            colorRG = math.add(math.multiply(paramT, [1,0,0]),math.multiply(1.0-paramT, [0,1.0,1.0]))
+            inputRay.direction = normalize([math.cos(degreeToRad(parameters["anglebeta"])), math.sin(degreeToRad(parameters["anglebeta"])), 0.0])
+        }
+
+        let color = PIXI.utils.rgb2hex(colorRG)
+
+        try {
+            // Calculate the path of ray passing through the optical system
+            let rayPathData = solveLens(...[inputRay, parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, parameters["refraction"]])
+
+            // Detect z intersection
+            
+            let resultRay = rayPathData["resultRay"]
+            let paramterT = -resultRay.position[1]/resultRay.direction[1]
+            let intersectionPosition = math.add(resultRay.position, math.multiply(paramterT,resultRay.direction))
+            if(intersectionPosition[0] > 0 && intersectionPosition[0] < 10)
+            {
+                console.log("Intersection " + intersectionPosition)
+                maximumX = math.max(maximumX, intersectionPosition[0])
+                minimumX = math.min(minimumX, intersectionPosition[0])
+            }
+            // Draw the path
+            drawPath(color,rayPathData.positions,cont)
         } catch(err)
         {
         }
     });
+
+    if(parameters["markSphericalAberration"] > 0)
+    {
+        // Mark aberration
+        console.log("Max/min " + maximumX + " - " + minimumX)
+        drawPath(0x00ff00,[[minimumX,0.3,0],[maximumX, 0.3,0]],cont)
+
+        let textObject = new PIXI.Text('Aberration',{fontFamily : 'Arial', fontSize: 24, fill : 0x00ff00, align : 'center'});
+        textObject.position.x = 200*minimumX
+        textObject.position.y = 200*0.3
+        cont.addChild(textObject)
+    }
+
     if(parameters["showLens"] > 0.1)
     {
         drawLens(cont, parameters["position1"], parameters["radiusr1"], 90,270)
         drawLens(cont, parameters["position2"], parameters["radiusr2"], 270,90+360)
     }
-    //stage.addChild(cont)
-    //stage.position = new PIXI.Point(1000,00)
 }
 
-/*
- * Draw scene
- */
-/*function drawScene(stage)
-{
-    var cont = new PIXI.Container()
-    //cont.setPIXI.Matrix().translate(50,50)
-    cont.setTransform(200,200, 0.0,0.0, 0.0, 0.0, 0.0, 0.0,0.0) 
-    stage.addChild(cont)
-    for(let i = 0; i < 10; i++)
-    {
-        drawPath([new Ray([-0.3, 0.0, 0], normalize([1.0,0.2,0.0])), 1.0, [2.0,0.0,0.0], 1.0, [0.2,0.0,0.0], 1.0, 1.5+i/100], cont)
-    }
-}
-*/
-
-
-let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens"]
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta"]
 
 function getCurrentParameters()
 {
@@ -282,6 +290,10 @@ defaultParameters["radiusr1"] = 1;
 defaultParameters["position1"] = 2;
 defaultParameters["radiusr2"] = 1;
 defaultParameters["position2"] = 2;
+defaultParameters["rayX"] = 0;
+defaultParameters["rayY"] = 0;
+defaultParameters["markSphericalAberration"] = 1
+defaultParameters["anglebeta"] = 0
 
 console.log(JSON.stringify(defaultParameters))
 
@@ -318,8 +330,25 @@ window.addEventListener("resize", function (e) {
 
 var isFullscreen = false
 
+function toggleCheckbox(node)
+{
+    if(node.checked == false) {
+        node.checked = true;
+    }
+    else {
+        if(node.checked == true) {
+            node.checked = false;
+         }
+    }
+}
 window.addEventListener("keydown", function (e) {
     console.log(e)
+    if(e["key"] == "m")
+        toggleCheckbox(document.getElementById("markSphericalAberration"))
+    if(e["key"] == "p")
+        toggleCheckbox(document.getElementById("shouldBeSource"))
+    if(e["key"] == "c")
+        toggleCheckbox(document.getElementById("showLens"))
     if(e["key"] == "f")
     {
         isFullscreen = !isFullscreen
@@ -327,7 +356,7 @@ window.addEventListener("keydown", function (e) {
             app.renderer.resize(window.innerWidth, window.innerHeight)
         else
             app.renderer.resize(window.innerWidth, window.innerHeight/2.0)
-        renderWithUserArguments()
     }
+    renderWithUserArguments()
 });
 
