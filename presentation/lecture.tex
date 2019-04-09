@@ -15,7 +15,7 @@
 Bo\v{z}et\v{e}chova 1/2. 612 66 Brno - Kr\'alovo Pole\\
 xdobia11@stud.fit.vutbr.cz}
 
-\date{May 15, 2019}
+\date{April 16, 2019}
 %\date{\today}
 %\date{} % bez data
 
@@ -33,20 +33,22 @@ xdobia11@stud.fit.vutbr.cz}
     \end{itemize}
     \begin{figure}
         \includegraphics[scale=0.5]{img/thinLensEq.png}
-        \caption{Model tenkej šošovky}
+        \caption{Model ideálnej tenkej šošovky}
     \end{figure}
 
 \end{frame}
 
 \begin{frame}\frametitle{Rozdelenie aberácii}
     \begin{itemize}
-        \item odchýlenie ľúčov od ohniskového bodu - Wikipedia
         \item \textbf{achromatické} \\
             \begin{itemize}
-                \item rozostrenie
-                \item deformácia 
+                \item rozostrenie\\
+                    \thinspace Spherical aberration, Coma, Astigmatism
+                \item deformácia \\
+                    \thinspace Petzval field curvature
             \end{itemize}
-        \item \textbf{chromatické}
+        \item \textbf{chromatické} \\
+            \thinspace Chromatická aberácia
     \end{itemize}
     
 \end{frame}
@@ -72,6 +74,29 @@ xdobia11@stud.fit.vutbr.cz}
     \end{figure}
     \end{columns}
 \end{frame}
+
+
+\begin{frame}\frametitle{Sférická aberácia}
+    \begin{itemize}
+        \item Hubblov teleskop 1990 (1.6 miliardy \$), opravný modul COSAR 
+        \item Arecibo, Puerto Rico, najväčší radiotelskop na zemi, vysiaci korektor 
+    \end{itemize}
+
+    \begin{columns}
+    \column{0.5\textwidth}
+    \begin{figure}
+        \includegraphics[scale=0.5]{img/cosar.png}
+        \caption{Obraz z Hubblovho teleskopu pred a po korekcii}
+    \end{figure}
+    \column{0.5\textwidth}
+    \begin{figure}
+        \includegraphics[scale=0.5]{img/arecibo.pdf}
+        \caption{Arecibo, Puerto Rico}
+    \end{figure}
+    \end{columns}
+\end{frame}
+
+
 
 \begin{frame}\frametitle{Coma}
     \begin{itemize}
@@ -100,8 +125,24 @@ xdobia11@stud.fit.vutbr.cz}
         % http://www.wikiwand.com/en/Petzval_field_curvature
         \item lúče z naklonenej predmetovej roviny konvergujú na rovine 
         \item nemožno voliť obrazovú rovinu, nutno použiť zakrivenú rovinu
-        \item nutno komenzovať: Kepler Space Center
     \end{itemize}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{figure}
+            \includegraphics[scale=0.15]{img/fieldcurvature.png}
+        \end{figure}
+            \column{0.5\textwidth}
+        \begin{figure}
+            \includegraphics[scale=0.50]{img/fieldAberration.png}
+        \end{figure}
+    \end{columns}
+\end{frame}
+\begin{frame}\frametitle{Petzvalovo zakrivenie pola}
+        \begin{figure}
+            \includegraphics[scale=0.15]{img/kepler.png}
+            \caption{Senzor v Kepler space observatory}
+        \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Astigmatizmus}
@@ -121,9 +162,25 @@ xdobia11@stud.fit.vutbr.cz}
         Riešienie: \textit{doublet}, SW korekcia 
     \end{itemize}
 
+    \begin{columns}
+        \column{0.4\textwidth}
+    \begin{figure}
+        \includegraphics[scale=0.3]{img/chromaticFocus.jpg}
+        \caption{Disperzia na šošovke}
+    \end{figure}
+
+        \column{0.6\textwidth}
+    \begin{figure}
+        \includegraphics[scale=0.4]{img/chromaticRefraction.png}
+        \caption{Závislosť indexu lomu na vlnovej frekvencii}
+    \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
     \begin{figure}
         \includegraphics[scale=0.4]{img/chromaticAberrationWikipedia.jpg}
-        \caption{lion!!}
+        \caption{Dôsledok chromatickej aberácie vo výslednom obraze}
     \end{figure}
 \end{frame}
 
@@ -146,13 +203,25 @@ xdobia11@stud.fit.vutbr.cz}
     \hbox to \paperwidth {
         \hfill Ďakujem za vašu pozornosť \hfill
     }
-
+    \vspace{1cm}
     \hbox to \paperwidth {
       \hfill \small ``Everything will be okay in the end. If it's not okay, \hfill
     }
     \hbox to \paperwidth {
         \hfill \small then it's not the end.'' - \textbf{John Lenon} \hfill
     }
+    \vspace{1cm}
+    \hbox to \paperwidth {
+        \hfill \scriptsize Zdroje:\hfill
+    }
+    \hbox to \paperwidth {
+        \hfill \scriptsize Hecht,Optics, Pearson education, Addison-Wesley, 2002\hfill
+    }
+
+    \hbox to \paperwidth {
+        \hfill \scriptsize Wikipedia.com\hfill
+    }
+
   
     
     \vfill }
