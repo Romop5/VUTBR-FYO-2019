@@ -1,27 +1,46 @@
 %===============================================================================
 % Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2018
 \chapter{Úvod}
-Aproximácie, ktoré ako inžinieri používame, nám často zjednodušujú prácu, no zároveň nám pília konár
-pod nohami v prípadoch, keď vyžadujeme neomylnosť a presnosť.
-Obdobná situácia sa vyskytuje aj v optike. Aberácie predstavujú odchýlky, ktoré vznikajú zjedošením
-modelu optických systémov. Ich nesprávne pochope, či dokonca ignorácia, môže viesť k fatálnym chybám
-ako napríklad v prípade Hubblového vesmírneho teleskopu.
+%Aproximácie, ktoré ako inžinieri používame, nám často zjednodušujú prácu, no zároveň nám pília konár
+%pod nohami v prípadoch, keď vyžadujeme neomylnosť a presnosť.
+%Obdobná situácia sa vyskytuje aj v optike. Aberácie predstavujú odchýlky, ktoré vznikajú zjedošením
+%modelu optických systémov. Ich nesprávne pochope, či dokonca ignorácia, môže viesť k fatálnym chybám
+%ako napríklad v prípade Hubblového vesmírneho teleskopu.
 
 \section{Aberácie}
-Aberácie prestavujú odchýlky od bežného optického modelu, ktoré sú spôsobené zjednodušením
-formalizov oproti realite. Príkladom je Schnellow zákon, ktorého bežná forma popisuje lom svetla len
-pre tzv. paraxiálne uhly. \cite{hechtoptics}
+Podľa literatúry je aberácia definovaná ako \textit{odchíľka od idealizovaného modelu Gaussovej
+optiky}\cite{hechtoptics}, či \textit{neschopnosť optického systému zaostriť ľúče do jedného bodu}[Wikipédia].
 
-Dôsledkom aberácii sú optické vady, ktoré sa prejavujú rozmazaním alebo deformáciou obrazu. V praxi sa tieto
+V praxi sú aberácie kolekcia javov, ktoré nastávajú v optických systémoch, a ktorých prítomnosť
+obvykle nie je žiadúca. Nakoľko táto práca vznikla na pôde fakulty informačných technológii, budú
+nás v tom texte zaujímať negatívne javy, ktoré vznikajú v obraze pri výskyte týchto aberácii.
+
+Aberácie prestavujú odchýlky od ideálneho optického modelu, ktoré sa v ňom nevyskytujú z dôvodu
+zjednodušenia formalizov oproti reálnym optickým systémom. Príkladom je \textit{Snellov zákon},
+ktorého zjednodušená forma popisuje lom svetla len pre tzv. paraxiálne uhly. \cite{hechtoptics}.
+
+Dôsledkom aberácii sú \textit{optické vady}, ktoré sa prejavujú rozmazaním alebo deformáciou obrazu. V praxi sa tieto
 vady riešia rozšírením optickej sústavy o ďalšie prvky, ktoré korigujú ľúče, prípadne pomocou
-špecializovaných softwareov.
+špecializovaného software-u \cite{automaticRemovalCA}. Softwareové riešenie ale nemusí byť vždy žiaduce nakoľko nemusí
+byť fyzikálne presné a môže sa jednať o istú aproximáciu.
+
+Počiatok skúmania aberácii siaha ku matematikovi \textbf{Ludwigovi von Seidelovi} (1821-1896), ktorý
+pôsobil na bavorských univerzitách a ktorého jednou z oblastí záujmu bola astronómia. \cite{seidel}
+Podstatným krokom pána Seidela bolo zadefinovanie piatich koeficientov v rovnici, ktorá definuje
+prechod paprskov šošovkou z pohľadu optiky vyššieho rádu. Vhodnou voľbou týchto koeficientov je 
+možné získať predpis hlavných geometrických aberácii. Táto rovnica bola pomenovaná podľa neho a 
+v literatúre je označovaná ako \textit{Seidler sums}.
+
+K skúmaniu aberácii ešte skorej prispel aj \textbf{Isaac Newton}, ktorý sa venoval ľudskému vnímaniu svetla a
+popísal jav \textit{disperzie svetla} na hranole, ktorá sa týka \textit{chromatickej aberácie}. \cite{elert}
 
 \section{Monochromatické aberácia}
 Monochromatické aberácie predstavujú odchýlky, ktoré sa vyskytujú už pri jednej vlnovej dĺžke.
 \subsection{Sférická aberacia}
 Sférická aberácia nastáva pri dopade rovnobežných ľúčov na sférický rozhranie prostredí. 
-Podľa bežnej teórie sa pri dopade na rozhranie zakrivenej šošovky láme ľúč do ohniska šošovky, ktoré
-dané krivosťou danej šošovky. 
+Podľa ideálneho modelu šošovky by sa pri dopade na rozhranie zakrivenej šošovky mal ľúč lámať do ohniska šošovky, ktoré
+je dané polomerom krivosti danej šošovky. 
+
 Pri dopade sa smer lomu riadi rozšírených Schnellovým zákonom, ktorý je rozšírený o odchýľkový člen, závislý na
 uhle. Odchýlka uhlu pri lome spôsobuje, že ľúče nedopadajú do jedného ohniska šošovky, ale sú
 rozptýlené v jeho okolí. Táto situácia
@@ -68,3 +87,9 @@ dosledok Snelloveho zakona.
 Riešenie: existujú SW \cite{automaticRemovalCA} ktoré sa pokúšajú o korekciu, 
 existujú špeciálne šošovky, ktoré korektne lomia 2 vlnové dĺžky (doublet) alebo viacero
 https://en.wikipedia.org/wiki/Achromatic\_lens
+
+\section{Komplexné riešenia aberácii}
+\begin{itemize}
+    \item stop shifting = do optickej trasy sú umiestnené ďalšie uzávierky => blokovanie paprskov
+        mimo optickej osy, ale vinetácia obrazu \cite{josesasian}
+\end{itemize}
