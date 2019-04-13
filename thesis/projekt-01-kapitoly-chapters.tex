@@ -41,29 +41,65 @@ Sférická aberácia nastáva pri dopade rovnobežných ľúčov na sférický o
 šošovka, či zrkadlo. 
 Podľa ideálneho modelu šošovky by sa pri dopade na rozhranie zakrivenej šošovky mal ľúč lámať do ohniska šošovky, ktoré
 je dané polomerom krivosti danej šošovky. V praxi sa vplyvom zakrivenia lúč lámu do rôznych
-ohniskových bodov \cite{elisa}[str. 12]. Platí, že lúč, ktorý je vzdialenejší od optickej osy, pretne optickú os bliššie
+ohniskových bodov \cite{elisa}[str. 12]. Platí, že lúč, ktorý je vzdialenejší od optickej osy, pretne optickú os bližšie
 ku rovine optického prvku. Táto situácia je zachytená na obrázku \ref{saill}.
 
-Dôsledkom tohoto javu je 
+Dôsledkom tohoto javu je rozmazanie obrazu. Bodové predmety sa preto javia ako kruhy s postupným
+prechodom od stredu zobrazenia bodu.
 
 \begin{figure}[h]
 \centering
 \label{saill}
 \includegraphics[width=6cm]{obrazky-figures/sphericalAberrationWikipedia.png}
+\includegraphics[width=3cm]{obrazky-figures/asphericLen.png}
 \caption{Ilustrácia sférickej aberácie. Vplyvom zakrivenia sa ľúče na rozhraní nelámu smerom
     do jedného ohniska. Prevzaté z Wikipédie\cite{sphericalAberrationWiki}.}
 \end{figure}
 
-Dôsledkom tohoto javu je rozostretie obrazu pri okrajoch obrazu.  
-Riešenie pomocou odlišného tvaru šošovky (apheric lens), ktoré sú ale drahé. https://en.wikipedia.org/wiki/Aspheric\_lens
+Keďže táto aberácia nastáva pri rovnobežných ľúčoch, týka sa obvykle teleskopov, pri ktorých
+pozorované objekty sú tak vzdialené, že vlny, ktoré vysielajú môžeme považovať za rovinné.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=3cm]{obrazky-figures/asphericLen.png}
-\caption{Asférická šošvka, ktorej tvar potláča sférickú aberáciu. Prevzaté z }
+Ako praktický príklad dôležitosti odstránenia aberácií môžeme uvažovať \textit{Hubblov vesmírny
+teleskop},
+ktorý bol vynesený do vesmíru v roku 1990. Krátko po jeho spustení bolo zistené, že obraz
+teleskopu nedosahuje predpokladanú kvalitu. Dôvodom degradácie bol tvar hlavného zrkadla, ktoré bolo
+príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešený pomocou prídavného modulu
+\textit{COSTAR}\cite{hechtoptics}. Rozdieľ pred a po aplikácii korekcie je možné pozorovať na obrázku
+\ref{hubbleImage}. 
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{obrazky-figures/costarNASA.png}
+    \includegraphics[scale=0.6]{obrazky-figures/cosar.png}
+    \caption{Obraz z Hubblovho teleskopu pred a po korekcii. Zdroj\cite{nasaHubble}}
+    \label{hubbleImage}
 \end{figure}
 
-Týkala sa aj Hubblového teleskopu
+Ďalším zaujímavým príkladom projektu, ktorý musel ošetriť sférickú aberáciu, je najvačší
+radioteleskop na zemi, nachádzajúci sa v Arecibe, Puerto Rico, ktorý je známy z filmu
+\textit{GoldenEye} s hlavnou postavou Jamesa Bonda. 
+Obvykle majú obdobné observatória zrkadlá v \textit{parabolickom tvare}, ktoré ale majú obmedzený
+uhlový rozsah a musia sa vhodne natáčať podľa smeru záujmu. Keďže hlavné zrkadlo tohoto observatória má
+zhruba 300 metrov v priemere, z konštrukčných dôvodov bolo navrhnuté staticky, a zároveň
+bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každého smeru.
+
+\begin{figure}
+    \includegraphics[scale=0.12]{obrazky-figures/areciboSite.jpg}
+    \includegraphics[scale=0.65]{obrazky-figures/arecibo.pdf}
+    \caption{Pohľad na prijímač v Arecibo, Puerto Rico. Vpravo schéma optickej sústavy, tvorenej
+    primárnym zrkadlom a prijímačom.}
+\end{figure}
+
+
+Z tohoto dôvodu je nad primárnym zrkadlom pohyblivo zavesený 90 ton vážiaci prijímač, ktorý je poziciovaný
+podľa smeru záujmu a zároveň obsahuje ďalšie zrkadlá, ktoré korigujú lúče do jediného fokálneho
+bodu\cite{hechtoptics}.
+
+\begin{figure}
+\includegraphics[scale=0.9]{obrazky-figures/areciboReceiver.pdf}
+    \centering \caption{Detail prijímača. Zdroj\cite{hechtoptics}}
+\end{figure}
+
 \subsection{Coma}
 Skreslenie off-axis objekov
 \subsection{Petzvald field curvatore}
@@ -73,24 +109,6 @@ Riešenie: zakrivený senzor namiesto roviny.
 Chromatická aberácia je jav šošovky, kedy jednotlivé vlnové dĺžky sú odlišne lomené pri dopade na
 rozhranie šošovky. Dôsledkom toho je posunutie ohniska jednotlivých farebných zložiek v obraze, ktoré je
 znázornené na obrázku \ref{chromaticFocus}. 
-
-%\begin{figure}[h]
-%\centering
-%\label{chromaticAexample}
-%\begin{subfigure}{.5\textwidth}
-%  \centering
-%\includegraphics[width=6cm]{obrazky-figures/chromaticFocus.jpg}
-%  \caption{1a}
-%  \label{fig:sfig1}
-%\end{subfigure}%
-%\begin{subfigure}{.5\textwidth}
-%  \centering
-%\includegraphics[width=6cm]{obrazky-figures/chromaticAberrationWikipedia.jpg}
-%  \caption{1b}
-%  \label{fig:sfig2}
-%\end{subfigure}
-%\caption{lol}
-%\end{figure}
 
 \begin{figure}[h]
 \centering
@@ -110,18 +128,33 @@ ako \textit{priečna chromatická aberácia}. Rozdieľ oboch typov aberácii je 
 
 Chromatická aberácia je variáciou známejšieho javu, ktorým je \textit{disperzia svetla}.
 Príčinou tejto aberácie je fakt, že index lomu prostredia je funkciou vlnovej dĺžky, preto výsledný
-uhol lom je závislý na vlnovej dĺžke. Samotná variácia indexu lomu v závislosti na vlnovej dĺžke 
+uhol lom je závislý na vlnovej dĺžke. Samotná variácia indexu lomu v závislosti na vlnovej dĺžke nie
+je fixná, ale líši sa pre konkrétne materiály. Obrázok \ref{chromaticDifference} ukazuje príkladnú
+tabulku, udávajúcu hodnoty koeficientov indexu lomu konkrétneho typu skla pre rozličné vlnové dĺžky.
 
 \begin{figure}[h]
 \centering
 \label{chromaticDifference}
 \includegraphics[width=6cm]{obrazky-figures/chromaticAberrationDifference.png}
+\includegraphics[width=6cm]{obrazky-figures/chromaticRefraction.png}
 \caption{Vlavo dĺžková, vpravo priečna chromatická aberácia a jej dôsledok na výsledný obraz.}
 \end{figure}
 
-Riešenie: existujú SW \cite{automaticRemovalCA} ktoré sa pokúšajú o korekciu, 
-existujú špeciálne šošovky, ktoré korektne lomia 2 vlnové dĺžky (doublet) alebo viacero
-https://en.wikipedia.org/wiki/Achromatic\_lens
+Chromatickú aberáciu je možné riešiť niekoľkými spôsobmi. Triviálne riešenie spočíva v nahradení
+lomivého optického prvku za odrazivý, nakoľko odraz nie je závyslý na vlnovej dĺžke \cite[elert]. 
+Iné riešenie pozostáva vo vytvorení obrazu tromi nezávyslými optickými sústavami, ktoré by boli
+vyľadené na konkrétnu vlnovú dĺžku, a následnou kompozíciou obrazu \cite{automaticRemovalCA}. Toto riešenie ale bude
+dostatočné len pre statické scény.
+
+Z hľadiska optiky je možné použiť \textit{achromatické šošovky}, ktoré sú vyrobené kombináciou dvoch
+rôznych materiálov za cieľom minimalizovania tejto aberácie. Tento spôsob ju ale nedokáže úplne 
+odstrániť pre všetky vlnové dĺźky, pretože závislosť indexu lomu obvykle nie je lineárna na vlnovej
+dĺžke\cite{chromaticFix}.
+
+Nakoniec, pre riešenie chromatickej aberácie existuje niekoľko algoritmov, ktoré dokážu utlmiť
+prejavy aberácie v existujúcom digitálnom obraze. Tieto riešenia napríklad realizujú tzv.
+\textit{warping} jednotlivých farebných zložiek obrazu tak, aby sa detekované hrany v obraze
+prekrývali \ref{automaticRemovalCA}.
 
 \section{Komplexné riešenia aberácii}
 \begin{itemize}

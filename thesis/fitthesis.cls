@@ -705,12 +705,12 @@ Management}{\@fit@EN}%
 \vspace{5mm}
 
 \iftoggle{slovak_used}{
-  \mkuctxtt{14}{\@departmentname@SK}
-  \mkuctxtt{11}{\@departmentname@EN}
+  %\mkuctxtt{14}{\@departmentname@SK}
+  %\mkuctxtt{11}{\@departmentname@EN}
 }{
   \iftoggle{enslovak_used}{
-    \mkuctxtt{14}{\@departmentname@EN}
-    \mkuctxtt{11}{\@departmentname@SK}
+    %\mkuctxtt{14}{\@departmentname@EN}
+    %\mkuctxtt{11}{\@departmentname@SK}
   }{
 %    \mkuctxtt{14}{\ifczech\@departmentname@CS\else\@departmentname@EN\fi}
 %    \mkuctxtt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
