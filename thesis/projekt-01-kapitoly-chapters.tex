@@ -71,7 +71,8 @@ príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešen�
     \centering
     \includegraphics[scale=0.3]{obrazky-figures/costarNASA.png}
     \includegraphics[scale=0.6]{obrazky-figures/cosar.png}
-    \caption{Obraz z Hubblovho teleskopu pred a po korekcii. Zdroj\cite{nasaHubble}}
+    \caption{Obraz z Hubblovho teleskopu pred a po korekcii. Odstránením sférickej aberácie došlo k
+    odstráneniu rozmazania. Zdroj\cite{nasaHubble}}
     \label{hubbleImage}
 \end{figure}
 
@@ -97,11 +98,25 @@ bodu\cite{hechtoptics}.
 
 \begin{figure}
 \includegraphics[scale=0.9]{obrazky-figures/areciboReceiver.pdf}
-    \centering \caption{Detail prijímača. Zdroj\cite{hechtoptics}}
+    \centering \caption{Detail prijímača. Ľúče vstupujú cez uzáverku, odrážajú sa od druhotného a
+    následne terciálneho zrkadla až do prijímača. Zdroj\cite{hechtoptics}}
 \end{figure}
 
 \subsection{Coma}
-Skreslenie off-axis objekov
+Ďalšou z aberácii je coma, ktorá sa vyskytuje pri bodových zdrojoch, ležiacich mimo optickej osy. 
+Ako môžeme vidieť na obrázku \ref{comaDescribe}, jednotlivé ľúče majú pri prechode spojkou 
+tendenciu stretnúť v jednej línii. Dôsledkom je potom pri zobrazení bodu rozmazaný typický obraz, ktorého
+tvar pripomína kométu.
+\begin{figure}[h]
+    \label{comaDescribe}
+\includegraphics[scale=0.15]{obrazky-figures/coma.png}
+\includegraphics[scale=0.35]{obrazky-figures/coma.jpg}
+    \centering \caption{Vľavo: dopad paralelných ľúčov pod uhlom spôsobuje }
+\end{figure}
+
+
+\subsection{Astigmatizmus}
+
 \subsection{Petzvald field curvatore}
 Riešenie: zakrivený senzor namiesto roviny.
 
@@ -137,7 +152,9 @@ tabulku, udávajúcu hodnoty koeficientov indexu lomu konkrétneho typu skla pre
 \label{chromaticDifference}
 \includegraphics[width=6cm]{obrazky-figures/chromaticAberrationDifference.png}
 \includegraphics[width=6cm]{obrazky-figures/chromaticRefraction.png}
-\caption{Vlavo dĺžková, vpravo priečna chromatická aberácia a jej dôsledok na výsledný obraz.}
+\caption{Vlavo dĺžková, vpravo priečna chromatická aberácia a jej dôsledok na výsledný obraz.
+    Zdroj\cite{chromaticAberrationsAstro}. Vpravo tabuľka, udávajúca index lomu pre jednotlivé
+    vlnové dĺžky v borosilikátovom skle.}
 \end{figure}
 
 Chromatickú aberáciu je možné riešiť niekoľkými spôsobmi. Triviálne riešenie spočíva v nahradení
@@ -156,8 +173,21 @@ prejavy aberácie v existujúcom digitálnom obraze. Tieto riešenia napríklad 
 \textit{warping} jednotlivých farebných zložiek obrazu tak, aby sa detekované hrany v obraze
 prekrývali \ref{automaticRemovalCA}.
 
-\section{Komplexné riešenia aberácii}
-\begin{itemize}
-    \item stop shifting = do optickej trasy sú umiestnené ďalšie uzávierky => blokovanie paprskov
-        mimo optickej osy, ale vinetácia obrazu \cite{josesasian}
-\end{itemize}
+\section{Demonštračný projekt}
+Vrámci tejto práce bol vypracovaný programový projekt, ktorého cieľom bolo umožňiť uživateľovi
+experimentovať s ľúčovou optikou a zároveň sa zoznámiť s vybranými aberáciami.
+
+Projekt bol implementovaný v jazyku \textit{Javascript} pomocou knižnice \textit{PIXI.js} pre prácu
+s HTML plátnom. Jeho jadrom je vykreslovanie dráhy ľúčov, ktoré postupujú z ľava do prava. 
+
+Projekt umožňuje uživateľovi nastavovať pozíciu a krivosť spojky, zároveň nastavovať typ zdroja 
+ľúčov, ako aj ich množstvo a výškové obmedzenie. Vzhľadom na rozsiahly počet parametrov aplikácie
+boli vybrané vhodné konfigurácie, ktoré demonštrujú jednotlivé aberácie.
+
+
+\begin{figure}
+\includegraphics[scale=0.4]{obrazky-figures/application.png}
+    \centering \caption{Príkladný výstup, ktorý uvidí uživateľ aplikácie pri konfigurácii sférickej aberácie.}
+\end{figure}
+
+
