@@ -59,13 +59,11 @@ prechodom od stredu zobrazenia bodu.
 Keďže táto aberácia nastáva pri rovnobežných ľúčoch, týka sa obvykle teleskopov, pri ktorých
 pozorované objekty sú tak vzdialené, že vlny, ktoré vysielajú môžeme považovať za rovinné.
 
-Ako praktický príklad dôležitosti odstránenia aberácií môžeme uvažovať \textit{Hubblov vesmírny
-teleskop},
-ktorý bol vynesený do vesmíru v roku 1990. Krátko po jeho spustení bolo zistené, že obraz
-teleskopu nedosahuje predpokladanú kvalitu. Dôvodom degradácie bol tvar hlavného zrkadla, ktoré bolo
-príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešený pomocou prídavného modulu
-\textit{COSTAR}\cite{hechtoptics}. Rozdieľ pred a po aplikácii korekcie je možné pozorovať na obrázku
-\ref{hubbleImage}. 
+Sférickú aberáciu je možné riešiť nahradením sférického tvaru zrkadla za parabolický,
+prípadne použitím \textit{asferických šošoviek}, ktoré vďaka svojmu tvaru nepodliehajú tejto
+aberácii. Šošovka tohoto tvaru je vyzobrazená na obrázku \ref{saill}. Ďalším riešením
+môže byť vloženie prídavného optického prvku, ktorý túto vadu zredukuje. Príkladom môže
+byť \textit{Schmidtov korektor}.
 
 \begin{figure}
     \centering
@@ -76,13 +74,14 @@ príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešen�
     \label{hubbleImage}
 \end{figure}
 
-Ďalším zaujímavým príkladom projektu, ktorý musel ošetriť sférickú aberáciu, je najvačší
-radioteleskop na zemi, nachádzajúci sa v Arecibe, Puerto Rico, ktorý je známy z filmu
-\textit{GoldenEye} s hlavnou postavou Jamesa Bonda. 
-Obvykle majú obdobné observatória zrkadlá v \textit{parabolickom tvare}, ktoré ale majú obmedzený
-uhlový rozsah a musia sa vhodne natáčať podľa smeru záujmu. Keďže hlavné zrkadlo tohoto observatória má
-zhruba 300 metrov v priemere, z konštrukčných dôvodov bolo navrhnuté staticky, a zároveň
-bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každého smeru.
+
+Ako praktický príklad dôležitosti odstránenia aberácií môžeme uvažovať \textit{Hubblov vesmírny
+teleskop},
+ktorý bol vynesený do vesmíru v roku 1990. Krátko po jeho spustení bolo zistené, že obraz
+teleskopu nedosahuje predpokladanú kvalitu. Dôvodom degradácie bol tvar hlavného zrkadla, ktoré bolo
+príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešený pomocou prídavného modulu
+\textit{COSTAR}\cite{hechtoptics}. Rozdieľ pred a po aplikácii korekcie je možné pozorovať na obrázku
+\ref{hubbleImage}. 
 
 \begin{figure}
     \includegraphics[scale=0.12]{obrazky-figures/areciboSite.jpg}
@@ -92,9 +91,19 @@ bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každ
 \end{figure}
 
 
+Ďalším zaujímavým príkladom projektu, ktorý musel ošetriť sférickú aberáciu, je najvačší
+radioteleskop na zemi, nachádzajúci sa v Arecibe, Puerto Rico, ktorý je známy z filmu
+\textit{GoldenEye} s hlavnou postavou Jamesa Bonda. 
+Obvykle majú obdobné observatória zrkadlá v \textit{parabolickom tvare}, ktoré netrpia sférickou
+aberáciou, ale musia sa vhodne natáčať podľa smeru záujmu tak, aby ľúče dopadali kolmo. Keďže hlavné zrkadlo tohoto observatória má
+zhruba 300 metrov v priemere, z konštrukčných dôvodov bolo navrhnuté ako staticky umiestnené v
+teréne, a zároveň
+bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každého smeru.
+
+
 Z tohoto dôvodu je nad primárnym zrkadlom pohyblivo zavesený 90 ton vážiaci prijímač, ktorý je poziciovaný
 podľa smeru záujmu a zároveň obsahuje ďalšie zrkadlá, ktoré korigujú lúče do jediného fokálneho
-bodu\cite{hechtoptics}.
+bodu\cite{hechtoptics}. Detail prijímača je možné pozorovať na obrázku \ref{areciboReceiver}.
 
 \begin{figure}
 \includegraphics[scale=0.9]{obrazky-figures/areciboReceiver.pdf}
@@ -104,21 +113,57 @@ bodu\cite{hechtoptics}.
 
 \subsection{Coma}
 Ďalšou z aberácii je coma, ktorá sa vyskytuje pri bodových zdrojoch, ležiacich mimo optickej osy. 
+V princípe je coma podobná sférickej aberácii - pozorovaný bodový zdroj je tak vzdialený, že jeho
+vlny môžeme uvažovať za rovinné pri dopade na rozhranie šošovky, zároveň ale bod leží mimo osy,
+preto ľúče dopadajú pod uhlom. Tento druh aberácie sa teda podobne ako pri sférickej aberácii týka
+teleskopov.
 Ako môžeme vidieť na obrázku \ref{comaDescribe}, jednotlivé ľúče majú pri prechode spojkou 
-tendenciu stretnúť v jednej línii. Dôsledkom je potom pri zobrazení bodu rozmazaný typický obraz, ktorého
-tvar pripomína kométu.
+tendenciu stretnúť v jednej línii, ale nie je v jednom bode. Dôsledkom je potom pri zobrazení bodu rozmazaný typický obraz, ktorého
+tvar pripomína kométu, ktorý môžeme vidieť na obrázku \ref{comaDescribe}.
 \begin{figure}[h]
     \label{comaDescribe}
 \includegraphics[scale=0.15]{obrazky-figures/coma.png}
 \includegraphics[scale=0.35]{obrazky-figures/coma.jpg}
-    \centering \caption{Vľavo: dopad paralelných ľúčov pod uhlom spôsobuje }
+    \centering \caption{Vľavo: dopad paralelných ľúčov pod uhlom spôsobuje nedokonalý fokus ľúčov v
+    obrazovej rovine. Vpravo: príklad obrazu pred a po korekcii comy}
 \end{figure}
+
+Efekt comy je možno minimalizovať zmenou krivosti šošovky. Podľa literatury je najvhodnejším tvarom 
+konvexne-planárna šošovka \cite{hechtoptics}[str. 272].
+
+Efekt comy je taktiež možné ovplyvniť pridaním \textit{blokovacej apertúry} pred šošovku na vhodné miesto.
+Detaily je možné nájsť v literatúre\cite{hechtoptics}.
+
+
+\subsection{Petzvald field curvature}
+Táto aberácia sa týka paralelných ľúčov, dopadajúcich pod rôznymi uhlami. Podľa ideálneho modelu
+šošovky by sme očakávali, že tieto ľúče budú mať ohnisko v rovnakej vzdialenosti od šošovky. 
+V skutočnosti je ohnisko závislé na uhlu dopadu a pozícia jednotlivých ohnísk bude sledovať tvar
+krivky, čo môžeme pozorovať na obrázku \ref{comaDescribe}.
+
+Dôsledkom tejto aberácie je fakt, že obraz nie je možné zachytiť rovinou bez vzniku rozmazania. 
+Príkladom kompenzácie tejto vady môže byť pole senzorov z \textit{Keplerovho versmírneho teleskopu},
+ktorých rozloženie nie je rovinné, ale zakrivené.
+
+\begin{figure}[h]
+    \label{comaDescribe}
+\includegraphics[scale=0.15]{obrazky-figures/fieldcurvature.png}
+\includegraphics[scale=0.60]{obrazky-figures/fieldAberration.png}
+    \centering \caption{Vľavo: }
+\end{figure}
+
 
 
 \subsection{Astigmatizmus}
 
-\subsection{Petzvald field curvatore}
-Riešenie: zakrivený senzor namiesto roviny.
+\begin{figure}[h]
+    \label{comaDescribe}
+\includegraphics[scale=0.30]{obrazky-figures/astigmatism.png}
+    \centering \caption{Vľavo: dopad paralelných ľúčov pod uhlom spôsobuje nedokonalý fokus ľúčov v
+    obrazovej rovine. Vpravo: príklad obrazu pred a po korekcii comy}
+\end{figure}
+
+
 
 \section{Chromatická aberácia}
 Chromatická aberácia je jav šošovky, kedy jednotlivé vlnové dĺžky sú odlišne lomené pri dopade na
