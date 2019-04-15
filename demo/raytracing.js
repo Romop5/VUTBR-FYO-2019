@@ -508,7 +508,9 @@ function applySettings(id)
         {"refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0, heigthRange: 1},
         // chromatic aberration
         chromaticAberration:
-        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1, heigthRange: 1}
+        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1, heigthRange: 1},
+        coma:
+        {"refraction":1.37,"raysCount":30,"radiusr1":3,"radiusr2":1.5,"position1":5.4,"position2":1.3,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":15,"isChromaticModeOn":0,"heigthRange":1.5}
     }
     setParameters(settingsList[id])
     renderWithUserArguments()
