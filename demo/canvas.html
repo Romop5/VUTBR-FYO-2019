@@ -53,15 +53,16 @@
         <div class="one-third column">
             <div class="row">
                 <div class="one-half column">Number of casted rays</div><div class="one-half column">
-                    <input type="number" id="raysCount" min="1" max="600" step="1"></div>
+                    <input type="number" id="raysCount" min="1" max="100" step="1"></div>
             </div>
 
-              Starting heigth range (parallel only) <input type="number" id="heigthRange" min="0" max="5" step="0.1">cm<br>
+              Starting heigth range (parallel only) <input type="number" id="heigthRange" min="0.01" max="2" step="0.1">cm<br>
             <b>Ray:</b><br>
                   Starting X position <input type="number" id="rayX" min="-5" max="20" step="0.1">cm<br>
                   Starting Y position <input type="number" id="rayY" min="-5" max="20" step="0.1">cm<br>
                   Angle beta (parallel rays only)<input type="number" id="anglebeta" min="-45" max="45" step="0.1">degrees<br>
-                  <input type="checkbox" id="addPerpendicular"> Add perpendicular rays<br>
+                  <input type="checkbox" id="addPerpendicular"> Add perpendicular rays (parallel
+                  rays only)<br>
         </div>
       </form>
         <div class="one-third column">
@@ -69,8 +70,8 @@
            <input type="checkbox" id="shouldBeSource"> Toggle point/plane source of rays <br>
            <b>Help</b>: <br>
            <input type="checkbox" id="markSphericalAberration"> Mark spherical aberration <br>
-           <input type="checkbox" id="showLens"> Enable lens curve <br>
-           <input type="checkbox" id="showOpticalAxis"> Toggle optical axis<br>
+           <input type="checkbox" id="showLens"> Mark lens shape<br>
+           <input type="checkbox" id="showOpticalAxis"> Toggle optical axis drawing<br>
            <input type="checkbox" id="fullscreen"> Toggle fullscreen<br>
            <b>A</b>- toggle optical axis marker<br>
            <b>F</b>- toggle fullscreen <br>
