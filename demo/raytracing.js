@@ -300,6 +300,7 @@ function drawScene(stage, parameters, app)
 
         let rayStartingPosition = [parameters["rayX"], parameters["rayY"],0]
 
+        let raysPool = []
         let inputRay = new Ray(math.add(rayStartingPosition,[0, offsets, 0]), [1,0,0])
         let colorRG = [1,1,1]
         // if rays are omnidirectional
@@ -310,12 +311,20 @@ function drawScene(stage, parameters, app)
             let angleInRadians = degreeToRad(offsets*angleConstant)
             inputRay = new Ray(rayStartingPosition, normalize([math.cos(angleInRadians),math.sin(angleInRadians),0]))
             colorRG = math.multiply(inputRay.direction,3.0)
+            raysPool.push(inputRay)
         } else {
             // if rays are parallel, then just set color according to distance to optical axis
             let maximum = math.max(...offsetsList)
             let paramT = math.abs(offsets)/maximum;
             colorRG = math.add(math.multiply(paramT, [1,0,0]),math.multiply(1.0-paramT, [0,1.0,1.0]))
             inputRay.direction = normalize([math.cos(degreeToRad(parameters["anglebeta"])), math.sin(degreeToRad(parameters["anglebeta"])), 0.0])
+            raysPool.push(inputRay)
+
+            if(parameters["addPerpendicular"] > 0)
+            {
+                let inputRay2 = new Ray(inputRay.position, normalize([1,0,0]))
+                raysPool.push(inputRay2)
+            }
         }
 
         let lensRefractionIndex = parameters["refraction"]
@@ -336,28 +345,39 @@ function drawScene(stage, parameters, app)
             let wavelength = wavelengthList[wavelengthID]
             let refraction = parameters["refraction"] + wavelength[0]/(740*4)
             let color = PIXI.utils.rgb2hex(wavelength[1])
-            try {
-                // Calculate the path of ray passing through the optical system
-                let rayPathData = solveLens(...[inputRay, parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, refraction])
-
-                // Detect z intersection
-                
-                let resultRay = rayPathData["resultRay"]
-                let paramterT = -resultRay.position[1]/resultRay.direction[1]
-                let intersectionPosition = math.add(resultRay.position, math.multiply(paramterT,resultRay.direction))
-                if(intersectionPosition[0] > 0 && intersectionPosition[0] < 10)
-                {
-                    console.log("Intersection " + intersectionPosition)
-                    maximumX = math.max(maximumX, intersectionPosition[0])
-                    minimumX = math.min(minimumX, intersectionPosition[0])
-                }
-                // Draw the path
-                drawPath(color,rayPathData.positions,cont)
-            } catch(err)
+            // Calculate the path of ray passing through the optical system
+            for(inputRayID in raysPool)
             {
+                try {
+                    let inputRay = raysPool[inputRayID];
+                    let rayPathData = solveLens(...[inputRay, parameters["radiusr1"], position1, parameters["radiusr2"], position2, 1.0, refraction])
+
+                    // Detect z intersection
+                    
+                    let resultRay = rayPathData["resultRay"]
+                    let paramterT = -resultRay.position[1]/resultRay.direction[1]
+                    let intersectionPosition = math.add(resultRay.position, math.multiply(paramterT,resultRay.direction))
+                    if(intersectionPosition[0] > 0 && intersectionPosition[0] < 10)
+                    {
+                        console.log("Intersection " + intersectionPosition)
+                        maximumX = math.max(maximumX, intersectionPosition[0])
+                        minimumX = math.min(minimumX, intersectionPosition[0])
+                    }
+                    // Draw the path
+                    drawPath(color,rayPathData.positions,cont)
+                } catch(err)
+                {
+                }
             }
         }
     });
+
+    if(parameters["showOpticalAxis"] > 0)
+    {
+        console.log("Max/min " + maximumX + " - " + minimumX)
+        drawPath(0xffffff,[[-1.0,0.0,0],[10.0, 0.0,0]],cont)
+    }
+
 
     if(parameters["markSphericalAberration"] > 0)
     {
@@ -378,7 +398,7 @@ function drawScene(stage, parameters, app)
     }
 }
 
-let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "anglebeta", "isChromaticModeOn", "heigthRange"]
+let dataFloatMembers = ["refraction", "raysCount", "radiusr1", "radiusr2", "position1", "position2", "showLens", "shouldBeSource", "rayX","rayY", "markSphericalAberration", "addPerpendicular", "showOpticalAxis","anglebeta", "isChromaticModeOn", "heigthRange"]
 
 function getCurrentParameters()
 {
@@ -429,6 +449,8 @@ defaultParameters["position2"] = 2;
 defaultParameters["rayX"] = 0;
 defaultParameters["rayY"] = 0;
 defaultParameters["markSphericalAberration"] = 0
+defaultParameters["showOpticalAxis"] = 0
+defaultParameters["addPerpendicular"] = 0
 defaultParameters["isChromaticModeOn"] = 0
 defaultParameters["anglebeta"] = 0
 defaultParameters["heigthRange"] = 1
@@ -505,12 +527,13 @@ function applySettings(id)
     settingsList = {
         // spherical aberration
         sphericalAberration:
-        {"refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0, heigthRange: 1},
+        {"addPerpendicular": 0, "refraction":1.5,"raysCount":30,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":1,"anglebeta":0,"isChromaticModeOn":0, heigthRange: 1},
         // chromatic aberration
         chromaticAberration:
-        {"refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1, heigthRange: 1},
+        {"addPerpendicular": 0, "refraction":1.5,"raysCount":5,"radiusr1":2.6,"radiusr2":1,"position1":4.8,"position2":2,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":0,"isChromaticModeOn":1, heigthRange: 1},
         coma:
-        {"refraction":1.37,"raysCount":30,"radiusr1":3,"radiusr2":1.5,"position1":5.4,"position2":1.3,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":15,"isChromaticModeOn":0,"heigthRange":1.5}
+        {"addPerpendicular": 0, "refraction":1.37,"raysCount":30,"radiusr1":3,"radiusr2":1.5,"position1":5.4,"position2":1.3,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"anglebeta":15,"isChromaticModeOn":0,"heigthRange":1.5},
+        petzvald: {"refraction":1.37,"raysCount":10,"radiusr1":3,"radiusr2":1.5,"position1":5.4,"position2":1.3,"showLens":0,"shouldBeSource":0,"rayX":0,"rayY":0,"markSphericalAberration":0,"addPerpendicular":1,"showOpticalAxis":1,"anglebeta":15,"isChromaticModeOn":0,"heigthRange":0.5}
     }
     setParameters(settingsList[id])
     renderWithUserArguments()
@@ -521,6 +544,8 @@ function applySettings(id)
  */
 window.addEventListener("keydown", function (e) {
     console.log(e)
+    if(e.target.nodeName == "INPUT")
+        return;
     if(e["key"] == "+" || e["key"] == "-")
     {
         let ratio = e["key"] == "+" ? 2.0 : 0.5;
@@ -531,6 +556,8 @@ window.addEventListener("keydown", function (e) {
     }
     if(e["key"] == "Enter")
         document.getElementById("raysCount").value = parseInt(document.getElementById("raysCount").value)+1
+    if(e["key"] == "a")
+        toggleCheckbox(document.getElementById("showOpticalAxis"))
     if(e["key"] == "m")
         toggleCheckbox(document.getElementById("markSphericalAberration"))
     if(e["key"] == "p")

@@ -40,6 +40,7 @@
               <option value="sphericalAberration">Spherical aberration</option>
               <option value="chromaticAberration">Chromatic aberration</option>
               <option value="coma">Coma</option>
+              <option value="petzvald">Petzvald field curvature</option>
             </select>
             <br>
             <b>Parameters of the lens</b><br>
@@ -60,6 +61,7 @@
                   Starting X position <input type="number" id="rayX" min="-5" max="20" step="0.1">cm<br>
                   Starting Y position <input type="number" id="rayY" min="-5" max="20" step="0.1">cm<br>
                   Angle beta (parallel rays only)<input type="number" id="anglebeta" min="-45" max="45" step="0.1">degrees<br>
+                  <input type="checkbox" id="addPerpendicular"> Add perpendicular rays<br>
         </div>
       </form>
         <div class="one-third column">
@@ -68,8 +70,9 @@
            <b>Help</b>: <br>
            <input type="checkbox" id="markSphericalAberration"> Mark spherical aberration <br>
            <input type="checkbox" id="showLens"> Enable lens curve <br>
-           <input type="checkbox" id="showAxis"> Toggle axis drawing<br>
+           <input type="checkbox" id="showOpticalAxis"> Toggle optical axis<br>
            <input type="checkbox" id="fullscreen"> Toggle fullscreen<br>
+           <b>A</b>- toggle optical axis marker<br>
            <b>F</b>- toggle fullscreen <br>
            <b>C</b>- toggle mono/chromatic rays <br>
            <b>P</b>- toggle point/omnidirectional rays <br>
@@ -81,7 +84,7 @@
       <div class="container" id="helpParagraph">
           This aim of this website is to <i>demonstrate the most common lens aberrations</i>.
           In general, <b>aberration</b> is an departure from the ideal model. In terms of lens,
-          aberrations cause rays to focus in multiple points instead of a single one (<b>sphere and
+          aberrations cause rays to focus in multiple points instead of a single one (<b>spherical and
               chromatic aberration</b>) or deformation of the image.
           The simulation shown in the canvas is based on <b>2D raytracing</b>, thus simulating the
           path of a ray as it pass through the lens.
