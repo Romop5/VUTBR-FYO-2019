@@ -4,8 +4,8 @@
 Cieľom tejto práce je poskytnúť čitateľovi rýchly prehľad v problematike optických aberácii.
 Ich znalosť môže čitateľovi pomôcť pri tvorbe realistických vykreslovacích programov alebo
 pri zaujímavých filtroch obrazu. Vzhľadom na komplexnosť týchto javov poskytuje text značne 
-zjednodušený popis a pre precíznu znalosť je vhodné vyhľadať doporučenú literatúru, napr. knihu pána
-Hechta\cite{hechtoptics}.
+zjednodušený popis a pre precíznu znalosť je vhodné vyhľadať doporučenú literatúru, napríklad knihu
+od Hechta\cite{hechtoptics}.
 %Aproximácie, ktoré ako inžinieri používame, nám často zjednodušujú prácu, no zároveň nám pília konár
 %pod nohami v prípadoch, keď vyžadujeme neomylnosť a presnosť.
 %Obdobná situácia sa vyskytuje aj v optike. Aberácie predstavujú odchýlky, ktoré vznikajú zjedošením
@@ -16,28 +16,30 @@ Hechta\cite{hechtoptics}.
 Podľa literatúry je aberácia definovaná ako \textit{odchíľka od idealizovaného modelu Gaussovej
 optiky}\cite{hechtoptics}, či \textit{neschopnosť optického systému zaostriť ľúče do jedného bodu}[Wikipédia].
 
-V praxi sú aberácie kolekcia javov, ktoré nastávajú v optických systémoch, a ktorých prítomnosť
+V praxi sú aberácie kolekciou javov, ktoré nastávajú v optických systémoch, a ktorých prítomnosť
 obvykle nie je žiadúca. Nakoľko táto práca vznikla na pôde fakulty informačných technológii, budú
 nás v tom texte zaujímať negatívne javy, ktoré vznikajú v obraze pri výskyte týchto aberácii.
 
 Aberácie prestavujú odchýlky od ideálneho optického modelu, ktoré sa v ňom nevyskytujú z dôvodu
 zjednodušenia formalizov oproti reálnym optickým systémom. Príkladom je \textit{Snellov zákon},
-ktorého zjednodušená forma popisuje lom svetla len pre tzv. paraxiálne uhly. \cite{hechtoptics}.
+ktorého zjednodušená forma popisuje lom svetla len pre tzv. \textit{paraxiálne uhly}. \cite{hechtoptics}.
 
 Dôsledkom aberácii sú \textit{optické vady}, ktoré sa prejavujú rozmazaním alebo deformáciou obrazu. V praxi sa tieto
-vady riešia rozšírením optickej sústavy o ďalšie prvky, ktoré korigujú ľúče, prípadne pomocou
-špecializovaného software-u \cite{automaticRemovalCA}. Softwareové riešenie ale nemusí byť vždy žiaduce nakoľko nemusí
-byť fyzikálne presné a môže sa jednať o istú aproximáciu.
+vady riešia rozšírením optickej sústavy o ďalšie prvky, ktoré korigujú ľúče, prípadne je možné obraz
+upraviť pomocou špecializovaného software-u \cite{automaticRemovalCA}. Software-ové riešenie ale
+nemusí byť vždy žiadúce, nakoľko nemusí
+byť fyzikálne presné a obvykle sa jedná len o istú aproximáciu ideálneho obrazu.
 
 Počiatok skúmania aberácii siaha ku matematikovi \textbf{Ludwigovi von Seidelovi} (1821-1896), ktorý
 pôsobil na bavorských univerzitách a ktorého jednou z oblastí záujmu bola astronómia. \cite{seidel}
 Podstatným krokom pána Seidela bolo zadefinovanie piatich koeficientov v rovnici, ktorá definuje
 prechod paprskov šošovkou z pohľadu optiky vyššieho rádu. Vhodnou voľbou týchto koeficientov je 
-možné získať predpis hlavných geometrických aberácii. Táto rovnica bola pomenovaná podľa neho a 
+možné získať predpis hlavných geometrických aberácii, ktoré sú v tejto práci ďalej definované. Rovnica bola pomenovaná podľa neho a 
 v literatúre je označovaná ako \textit{Seidler sums}.
 
 K skúmaniu aberácii ešte skorej prispel aj \textbf{Isaac Newton}, ktorý sa venoval ľudskému vnímaniu svetla a
-popísal jav \textit{disperzie svetla} na hranole, ktorá sa týka \textit{chromatickej aberácie}. \cite{elert}
+popísal jav \textit{disperzie svetla} na hranole, ktorá sa týka \textit{chromatickej
+aberácie}\cite{elert}.
 
 \section{Monochromatické aberácie}
 Monochromatické aberácie predstavujú odchýlky, ktoré sa vyskytujú už pri jednej vlnovej dĺžke.
@@ -45,12 +47,12 @@ Monochromatické aberácie predstavujú odchýlky, ktoré sa vyskytujú už pri 
 Sférická aberácia nastáva pri dopade rovnobežných ľúčov na sférický optický prvok, ktorým môže byť
 šošovka, či zrkadlo. 
 Podľa ideálneho modelu šošovky by sa pri dopade na rozhranie zakrivenej šošovky mal ľúč lámať do ohniska šošovky, ktoré
-je dané polomerom krivosti danej šošovky. V praxi sa vplyvom zakrivenia lúč lámu do rôznych
+je dané polomerom krivosti danej šošovky. V praxi sa vplyvom sférického zakrivenia lúče lámu do rôznych
 ohniskových bodov \cite{elisa}[str. 12]. Platí, že lúč, ktorý je vzdialenejší od optickej osy, pretne optickú os bližšie
 ku rovine optického prvku. Táto situácia je zachytená na obrázku \ref{saill}.
 
 Dôsledkom tohoto javu je rozmazanie obrazu. Bodové predmety sa preto javia ako kruhy s postupným
-prechodom od stredu zobrazenia bodu.
+rozplývajúcim sa prechodom od stredu zobrazenia bodu.
 
 \begin{figure}[h]
 \centering
@@ -58,11 +60,11 @@ prechodom od stredu zobrazenia bodu.
 \includegraphics[width=6cm]{obrazky-figures/sphericalAberrationWikipedia.png}
 \includegraphics[width=3cm]{obrazky-figures/asphericLen.png}
 \caption{Ilustrácia sférickej aberácie. Vplyvom zakrivenia sa ľúče na rozhraní nelámu smerom
-    do jedného ohniska. Prevzaté z Wikipédie\cite{sphericalAberrationWiki}.}
+    do jedného ohniska. Vpravo je príklad asférickej šošovky, ktorá minimalizuje sférickú aberáciu. Prevzaté z Wikipédie\cite{sphericalAberrationWiki}.}
 \end{figure}
 
 Keďže táto aberácia nastáva pri rovnobežných ľúčoch, týka sa obvykle teleskopov, pri ktorých
-pozorované objekty sú tak vzdialené, že vlny, ktoré vysielajú môžeme považovať za rovinné.
+sú pozorované objekty tak vzdialené, že vlny, ktoré vysielajú môžeme považovať za rovinné.
 
 Sférickú aberáciu je možné riešiť nahradením sférického tvaru zrkadla za parabolický,
 prípadne použitím \textit{asferických šošoviek}, ktoré vďaka svojmu tvaru nepodliehajú tejto
@@ -72,8 +74,8 @@ byť \textit{Schmidtov korektor}.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.3]{obrazky-figures/costarNASA.png}
-    \includegraphics[scale=0.6]{obrazky-figures/cosar.png}
+    \includegraphics[scale=0.3]{obrazky-figures/costarNASA.jpg}
+    \includegraphics[scale=0.6]{obrazky-figures/cosar.jpg}
     \caption{Obraz z Hubblovho teleskopu pred a po korekcii. Odstránením sférickej aberácie došlo k
     odstráneniu rozmazania. Zdroj\cite{nasaHubble}}
     \label{hubbleImage}
@@ -100,11 +102,9 @@ príliš ploché, čo spôsobovalo sférickú aberáciu. Problém bol vyriešen�
 radioteleskop na zemi, nachádzajúci sa v Arecibe, Puerto Rico, ktorý je známy z filmu
 \textit{GoldenEye} s hlavnou postavou Jamesa Bonda. 
 Obvykle majú obdobné observatória zrkadlá v \textit{parabolickom tvare}, ktoré netrpia sférickou
-aberáciou, ale musia sa vhodne natáčať podľa smeru záujmu tak, aby ľúče dopadali kolmo. Keďže hlavné zrkadlo tohoto observatória má
-zhruba 300 metrov v priemere, z konštrukčných dôvodov bolo navrhnuté ako staticky umiestnené v
-teréne, a zároveň
-bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každého smeru.
-
+aberáciou, ale musia sa vhodne natáčať podľa smeru záujmu tak, aby ľúče dopadali pozdĺž optickej osy. Keďže hlavné zrkadlo tohoto observatória má
+zhruba 300 metrov v priemere, z konštrukčných dôvodov bolo staticky umiestnené v
+teréne, a zároveň bolo nutné zvoliť sférický tvar aby malo zrkadlo rovnaké vlastnosti z každého smeru.
 
 Z tohoto dôvodu je nad primárnym zrkadlom pohyblivo zavesený 90 ton vážiaci prijímač, ktorý je poziciovaný
 podľa smeru záujmu a zároveň obsahuje ďalšie zrkadlá, ktoré korigujú lúče do jediného fokálneho
@@ -140,9 +140,8 @@ konvexne-planárna šošovka \cite{hechtoptics}[str. 272].
 Efekt comy je taktiež možné ovplyvniť pridaním \textit{blokovacej apertúry} pred šošovku na vhodné miesto.
 Detaily je možné nájsť v literatúre\cite{hechtoptics}.
 
-
 \subsection{Petzvald field curvature}
-Táto aberácia sa týka paralelných ľúčov, dopadajúcich pod rôznymi uhlami. Podľa ideálneho modelu
+Táto aberácia sa týka paralelných ľúčov, dopadajúcich na šošovku pod rôznymi uhlami. Podľa ideálneho modelu
 šošovky by sme očakávali, že tieto ľúče budú mať ohnisko v rovnakej vzdialenosti od šošovky. 
 V skutočnosti je \textit{ohnisko závislé na uhlu dopadu} a pozícia jednotlivých ohnísk bude sledovať tvar
 krivky, čo môžeme pozorovať na obrázku \ref{comaDescribe}.
@@ -154,8 +153,9 @@ ktorých rozloženie nie je rovinné, ale zakrivené.
 \begin{figure}[h]
     \label{comaDescribe}
 \includegraphics[scale=0.15]{obrazky-figures/fieldcurvature.png}
-\includegraphics[scale=0.60]{obrazky-figures/fieldAberration.png}
-    \centering \caption{Vľavo: }
+\includegraphics[scale=0.60]{obrazky-figures/fieldAberration.jpg}
+    \centering \caption{Vľavo: znázornenie rozdieľnych polôch ohnísk v závislosti na uhle. Vpravo:
+    dôsledok aberácie na výsledný obraz.}
 \end{figure}
 
 
@@ -173,8 +173,8 @@ Vizuálny prejav astigmatizmu je znázornený na obrázku \ref{comaDescribe}.
 
 \begin{figure}[h]
     \label{comaDescribe}
-\includegraphics[scale=0.30]{obrazky-figures/astigmatismRays.png}
-\includegraphics[scale=0.30]{obrazky-figures/astigmatism.png}
+\includegraphics[scale=0.60]{obrazky-figures/astigmatismRays.png}
+\includegraphics[scale=0.18]{obrazky-figures/astigmatism.png}
     \centering \caption{Vľavo: ohniská sú posunuté vzhľadom na zdrojovú rovinu ľúčov.
      Vpravo: Demonštrácia vizuálneho astigmatizu, teda vnemu, akým vnímajú obraz osoby,
     trpiace touto chorobou. Obrázky prebraté z Wikipédie\cite{astigmatism}.}
@@ -226,7 +226,8 @@ vyľadené na konkrétnu vlnovú dĺžku, a následnou kompozíciou obrazu \cite
 dostatočné len pre statické scény.
 
 Z hľadiska optiky je možné použiť \textit{achromatické šošovky}, ktoré sú vyrobené kombináciou dvoch
-rôznych materiálov za cieľom minimalizovania tejto aberácie. Tento spôsob ju ale nedokáže úplne 
+rôznych materiálov za cieľom minimalizovania tejto aberácie. Podľa dvoch materiáloch hovoríme o
+doublete, pri troch o triplete. Tento spôsob ju ale nedokáže úplne 
 odstrániť pre všetky vlnové dĺźky, pretože závislosť indexu lomu obvykle nie je lineárna na vlnovej
 dĺžke\cite{chromaticFix}.
 
