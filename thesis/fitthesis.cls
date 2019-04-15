@@ -23,6 +23,7 @@
 \newif\iftwoside   \let\iftwoside\iffalse
 
 
+
 %-----------------------------------------------------------------------------
 % Parametry tridy (odkomentovani zakomentovanych na vlastni nebezpeci)
 % Class parameters (uncommenting of commented one is only on your own risk)
@@ -521,19 +522,19 @@ Management}{\@fit@EN}%
 
 \vfill
 
-\iftoggle{czech_used}{
-\mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
-}{
-  \ifslovak
-    \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
-  \else
-    \ifenslovak
-      \mktxt@b{16}{\@abstract@SK}\noindent\@tabstract@CS
-    \else
-      \mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
-    \fi
-  \fi
-}
+%\iftoggle{czech_used}{
+%\mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
+%}{
+%  \ifslovak
+%    \mktxt@b{16}{\@abstract@EN}\noindent\@tabstract@EN
+%  \else
+%    \ifenslovak
+%      \mktxt@b{16}{\@abstract@SK}\noindent\@tabstract@CS
+%    \else
+%      \mktxt@b{16}{\@abstract@CS}\noindent\@tabstract@CS
+%    \fi
+%  \fi
+%}
 
 \vfill
 
@@ -549,19 +550,19 @@ Management}{\@fit@EN}%
 
 \vfill
 
-\iftoggle{czech_used}{
-\mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
-}{
-  \ifslovak
-    \mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
-  \else
-    \ifenslovak
-      \mktxt@b{16}{\@keywords@SK}\noindent\@tkeywords@CS
-    \else
-      \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
-    \fi
-  \fi
-}
+%\iftoggle{czech_used}{
+%\mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
+%}{
+%  \ifslovak
+%    \mktxt@b{16}{\@keywords@EN}\noindent\@tkeywords@EN
+%  \else
+%    \ifenslovak
+%      \mktxt@b{16}{\@keywords@SK}\noindent\@tkeywords@CS
+%    \else
+%      \mktxt@b{16}{\@keywords@CS}\noindent\@tkeywords@CS
+%    \fi
+%  \fi
+%}
 
 \vfill
 

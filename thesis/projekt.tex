@@ -54,6 +54,8 @@
 %\graphicspath{{obrazky-figures/}{./obrazky-figures/}}
 %\graphicspath{{obrazky-figures/}{../obrazky-figures/}}
 
+\renewcommand{\thesection}{\arabic{section}}
+
 %---rm---------------
 \renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm / set Latin Modern Roman as rm
 %---sf---------------
@@ -132,11 +134,14 @@
   supervisor.title.p={},   %titul před jménem (nepovinné) / title before the name (optional)
   supervisor.title.a={},    %titul za jménem (nepovinné) / title after the name (optional)
   % Klíčová slova / keywords
-  keywords.cs={Sem budou zapsána jednotlivá klíčová slova v českém (slovenském) jazyce, oddělená čárkami.}, % klíčová slova v českém či slovenském jazyce / keywords in czech or slovak language
+  keywords.cs={Aberácie, sférická aberácia, astigmatizmus, coma, chromatická aberácia}, % klíčová slova v českém či slovenském jazyce / keywords in czech or slovak language
   keywords.en={Sem budou zapsána jednotlivá klíčová slova v anglickém jazyce, oddělená čárkami.}, % klíčová slova v anglickém jazyce / keywords in english
   %keywords.en={Here, individual keywords separated by commas will be written in English.},
   % Abstrakt / Abstract
-  abstract.cs={Do tohoto odstavce bude zapsán výtah (abstrakt) práce v českém (slovenském) jazyce.}, % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
+  abstract.cs={Cieľom tejto práce je poskytnúť čitateľovi základný prehľad o optických aberáciach,
+  ich prejavoch a možnosti ich riešenia. Súčasťou práce je edukatívna aplikácia, ktorá umožňuje
+  záujemcom experimentovať s nastavením optickej sústavy a ovplyvniť tak vznik jednotlivých aberácii
+  pri šírení ľúčov systémom.}, % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
   abstract.en={Do tohoto odstavce bude zapsán výtah (abstrakt) práce v anglickém jazyce.}, % abstrakt v anglickém jazyce / abstract in english
   %abstract.en={An abstract of the work in English will be written in this paragraph.},
   % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky) / Declaration (for thesis in english should be in english)
@@ -216,6 +221,7 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.},
     \cleardoublepage
   \fi
 
+  \clearpage
   % Text prace / Thesis text
   % ----------------------------------------------
   \input{projekt-01-kapitoly-chapters}
