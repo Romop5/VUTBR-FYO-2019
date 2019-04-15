@@ -1,6 +1,6 @@
 %===============================================================================
 % Autoři: Michal Bidlo, Bohuslav Křena, Jaroslav Dytrych, Petr Veigend a Adam Herout 2018
-\chapter{Úvod}
+\section{Úvod}
 Cieľom tejto práce je poskytnúť čitateľovi rýchly prehľad v problematike optických aberácii.
 Ich znalosť môže čitateľovi pomôcť pri tvorbe realistických vykreslovacích programov alebo
 pri zaujímavých filtroch obrazu. Vzhľadom na komplexnosť týchto javov poskytuje text značne 
@@ -112,6 +112,7 @@ bodu\cite{hechtoptics}. Detail prijímača je možné pozorovať na obrázku \re
 
 \begin{figure}
 \includegraphics[scale=0.9]{obrazky-figures/areciboReceiver.pdf}
+    \label{areciboReceiver}
     \centering \caption{Detail prijímača. Ľúče vstupujú cez uzáverku, odrážajú sa od druhotného a
     následne terciálneho zrkadla až do prijímača. Zdroj\cite{hechtoptics}}
 \end{figure}
@@ -143,7 +144,7 @@ Detaily je možné nájsť v literatúre\cite{hechtoptics}.
 \subsection{Petzvald field curvature}
 Táto aberácia sa týka paralelných ľúčov, dopadajúcich pod rôznymi uhlami. Podľa ideálneho modelu
 šošovky by sme očakávali, že tieto ľúče budú mať ohnisko v rovnakej vzdialenosti od šošovky. 
-V skutočnosti je ohnisko závislé na uhlu dopadu a pozícia jednotlivých ohnísk bude sledovať tvar
+V skutočnosti je \textit{ohnisko závislé na uhlu dopadu} a pozícia jednotlivých ohnísk bude sledovať tvar
 krivky, čo môžeme pozorovať na obrázku \ref{comaDescribe}.
 
 Dôsledkom tejto aberácie je fakt, že obraz nie je možné zachytiť rovinou bez vzniku rozmazania. 
@@ -160,15 +161,23 @@ ktorých rozloženie nie je rovinné, ale zakrivené.
 
 
 \subsection{Astigmatizmus}
+Astigmatizmus je jav, kedy lúče v jednej rovine dopadajú do iného ohniska, než ľúče roviny kolmej na
+ňu. V dôsledku tohoto javu je bodový predmet rozmazaný v smere daných rovín, v závislosti na polohe
+obrazovej roviny. Polohy jednotlivých ohnísk sú znázornené na obrázku \ref{comaDescribe}.
 
-Astigmatizmus sa môže vyskytovať aj v ľudskom oku z dôvodu nedokonalosti šošovky. Vizuálny prejav
-astigmatizmu je znázornený na obrázku \ref{comaDescribe}.
+Astigmatizmus sa vyskytuje pre predmety, ktoré ležia mimo optickej osy, alebo pre predmety na
+optickej osy v prípade nesymetrickosti šošovky\ref{astigmatism}.
+
+Astigmatizmus sa môže vyskytovať aj v ľudskom oku z dôvodu nepravideľne tvarovanej šošovky. 
+Vizuálny prejav astigmatizmu je znázornený na obrázku \ref{comaDescribe}.
 
 \begin{figure}[h]
     \label{comaDescribe}
+\includegraphics[scale=0.30]{obrazky-figures/astigmatismRays.png}
 \includegraphics[scale=0.30]{obrazky-figures/astigmatism.png}
-    \centering \caption{Demonštrácia vizuálneho astigmatizu, teda vnemu, akým vnímajú obraz osoby,
-    trpiace touto chorobou.}
+    \centering \caption{Vľavo: ohniská sú posunuté vzhľadom na zdrojovú rovinu ľúčov.
+     Vpravo: Demonštrácia vizuálneho astigmatizu, teda vnemu, akým vnímajú obraz osoby,
+    trpiace touto chorobou. Obrázky prebraté z Wikipédie\cite{astigmatism}.}
 \end{figure}
 
 
@@ -224,7 +233,7 @@ dĺžke\cite{chromaticFix}.
 Nakoniec, pre riešenie chromatickej aberácie existuje niekoľko algoritmov, ktoré dokážu utlmiť
 prejavy aberácie v existujúcom digitálnom obraze. Tieto riešenia napríklad realizujú tzv.
 \textit{warping} jednotlivých farebných zložiek obrazu tak, aby sa detekované hrany v obraze
-prekrývali \ref{automaticRemovalCA}.
+prekrývali\cite{automaticRemovalCA}.
 
 \section{Demonštračný projekt}
 Vrámci tejto práce bol vypracovaný programový projekt, ktorého cieľom bolo umožňiť uživateľovi
@@ -232,10 +241,15 @@ experimentovať s ľúčovou optikou a zároveň sa zoznámiť s vybranými aber
 
 Projekt bol implementovaný v jazyku \textit{Javascript} pomocou knižnice \textit{PIXI.js} pre prácu
 s HTML plátnom. Jeho jadrom je vykreslovanie dráhy ľúčov, ktoré postupujú z ľava do prava. 
+Implementácia obecného lomu ľúča v 3D priestore je založená na článku\cite{refractionAlgorithm}.
 
 Projekt umožňuje uživateľovi nastavovať pozíciu a krivosť spojky, zároveň nastavovať typ zdroja 
 ľúčov, ako aj ich množstvo a výškové obmedzenie. Vzhľadom na rozsiahly počet parametrov aplikácie
 boli vybrané vhodné konfigurácie, ktoré demonštrujú jednotlivé aberácie.
+
+Projekt zároveň poskytuje možnosť zvoliť chromatické vlny a sledovať ich postup systémom. V tomto
+prípade je ale indexu lomu \textit{aproximovaný lineárne} pre jednotlivé vlnové dĺžky, čo nie je
+úplne presné z hľadiska fyziky, ale postačujúce pre účely demonštrácie.
 
 \begin{figure}
 \includegraphics[scale=0.4]{obrazky-figures/application.png}
